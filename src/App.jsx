@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./App.css";
 
-import Products from "./components/Products";
+import Products from "./components/Products.jsx";
 
 function App() {
   const theme = createTheme({
