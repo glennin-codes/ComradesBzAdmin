@@ -70,7 +70,7 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
       return;
     }
     processedFiles++;
-    if (!file.type.startsWith("image/jpeg") && !file.type.startsWith("image/png") && !file.type.startsWith("image/jpg")) {
+    if (!file.type.startsWith("image/jpeg") && !file.type.startsWith("image/webp") && !file.type.startsWith("image/png") && !file.type.startsWith("image/jpg")) {
       toast.error(`File ${file.name} has an unsupported format and cannot be processed.`);
       return;
     }
@@ -83,7 +83,11 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       const binaryStr = reader.result;
-      setImages(prevState => [...prevState, binaryStr]);
+      const imageObject = {
+        data: binaryStr,
+        color: "" // initialize the color as an empty string
+      };
+      setImages(prevState => [...prevState, imageObject]);
     };
   });
 }, [selected,images]);
@@ -103,7 +107,7 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
       </Typography>
 
       <Box maxWidth="sm" sx={{ my: 4, mx: "auto" }}>
-        {/* new car information form */}
+        {/* product information form */}
         <form onSubmit={handleSubmit}>
           <Grid
             container
@@ -243,7 +247,28 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
               </Box>
             </Grid>
             <Grid item xs={12}>
-              {/* car description textarea */}
+  {/* image and color inputs */}
+  {images.map((image, index) => (
+    <Box key={index} sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
+      {/* image display */}
+      <img src={URL.createObjectURL(image.file)} alt={`Image ${index + 1}`} width="100" height="100" />
+
+      {/* color input */}
+      <FormControl fullWidth variant="standard">
+        <InputLabel>Image {index + 1} Color</InputLabel>
+        <Select value={image.color} onChange={handleColorChange(index)}>
+          <MenuItem value="red">Red</MenuItem>
+          <MenuItem value="blue">Blue</MenuItem>
+          <MenuItem value="green">Green</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
+  ))}
+</Grid>
+
+
+            <Grid item xs={12}>
+              {/* product description textarea */}
               <TextField
                 fullWidth
                 multiline
