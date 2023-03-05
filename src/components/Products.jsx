@@ -55,17 +55,17 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
   const count=acceptedFiles.length ;
   setIsSelected(prevCount=> prevCount + count);
   console.log(selected);
-  if (selected > 10) {
-    toast.error("Cannot accept more than 10 files.");
+  if (selected > 6) {
+    toast.error("Cannot accept more than 6 files.");
     return;
   }
 
-  const numberOfAcceptedFiles = Math.min(acceptedFiles.length, 10 - images.length);
+  const numberOfAcceptedFiles = Math.min(acceptedFiles.length, 6 - images.length);
   const EstablishedAcceptedFiles = acceptedFiles.slice(0, numberOfAcceptedFiles);
 
 
   EstablishedAcceptedFiles.forEach(file => {
-    if (processedFiles >= 10) {
+    if (processedFiles >= 6) {
       toast.error("Only 10 files can be processed at a time.");
       return;
     }
@@ -74,8 +74,8 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
       toast.error(`File ${file.name} has an unsupported format and cannot be processed.`);
       return;
     }
-    if (file.size > 6.5 * 1024 * 1024) {
-      toast.error(`File ${file.name} is larger than 6.5 MB and cannot be processed.`);
+    if (file.size > 5.5 * 1024 * 1024) {
+      toast.error(`File ${file.name} is larger than 5.5 MB and cannot be processed.`);
       return;
     }
 
