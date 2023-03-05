@@ -19,6 +19,8 @@ import { useDropzone } from "react-dropzone";
 import Toast from "../assets/utils/Toast";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import DeleteIcon from '@mui/icons-material/Delete'
+import IconButton from '@mui/material/IconButton';
 
 export default function Products() {
 {/*states*/}
@@ -91,6 +93,11 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     };
   });
 }, [selected,images]);
+const handleColorChange = (index) => (event) => {
+  const newImages = [...images];
+  newImages[index].color = event.target.value;
+  setImages(newImages);
+};
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop
   });
@@ -98,7 +105,41 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
   const handleValueChange = (prop) =>(event)=> {
     setValues({ ...values, [prop]: event.target.value });
   };
-  const handleSubmit = () => {};
+  //delete images
+const deleteImage = (index) => {
+  setImages((prevState) => prevState.filter((_, i) => i !== index));
+  setIsSelected(prevCount=> prevCount - 1)
+ 
+};
+  const handleSubmit = (event) => {
+     
+    event.preventDefault();
+    setIsSubmit(true);
+    setIsUpLoading("Uploading to database.. wait for about a minute please");
+ 
+    const newProductInfo = { ...values,images};
+ 
+    axios.post("https://uploadercloudinary.onrender.com/car",newProductInfo)
+      .then(({ data }) => {
+        
+        if (data.code === 1) {
+          setStatus(`product added succesfully`);
+         
+         setImages([]);
+        
+        setIsSubmit(false);
+          event.target.reset();
+        }
+      //  throw new Error('Failed to upload to Cloudinary');
+      })
+      .catch((err) => {
+        setError(`product not added, there was an error`);
+      
+       
+        
+      });
+      
+  };
   return (
     <Box>
       <Toast time={time}/>
@@ -251,7 +292,7 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
   {images.map((image, index) => (
     <Box key={index} sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
       {/* image display */}
-      <img src={URL.createObjectURL(image.file)} alt={`Image ${index + 1}`} width="100" height="100" />
+      <img src={image.data} alt={`Image ${index + 1}`} width="100" height="100" />
 
       {/* color input */}
       <FormControl fullWidth variant="standard">
@@ -260,8 +301,22 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
           <MenuItem value="red">Red</MenuItem>
           <MenuItem value="blue">Blue</MenuItem>
           <MenuItem value="green">Green</MenuItem>
+          <MenuItem value="green">Black</MenuItem>
+          <MenuItem value="green">white</MenuItem>
+          <MenuItem value="green">pink</MenuItem>
+          <MenuItem value="green">silver</MenuItem>
+          <MenuItem value="green">yellow</MenuItem>
         </Select>
       </FormControl>
+      <IconButton onClick={() => deleteImage(index)}>
+  <DeleteIcon   sx={{
+    color: 'rgb(255, 0, 0)',
+    '&:hover': {
+      color: 'rgb(200, 0, 0)',
+      cursor: 'pointer',
+    },
+  }} />
+</IconButton>
     </Box>
   ))}
 </Grid>

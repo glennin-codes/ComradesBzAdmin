@@ -1,0 +1,26 @@
+/* CSS */
+.image-wrapper {
+    position: relative;
+  }
+  
+  .image-wrapper img {
+    position: absolute;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .image-wrapper img.selected {
+    transform: scale(1.2);
+  }
+  
+  .delete-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .image-wrapper:hover .delete-icon {
+    opacity: 1;
+  }
+  
