@@ -87,7 +87,9 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
       const binaryStr = reader.result;
       const imageObject = {
         data: binaryStr,
-        color: "" // initialize the color as an empty string
+        color: "",
+        ref:React.createRef()
+        // initialize the color as an empty string
       };
       setImages(prevState => [...prevState, imageObject]);
     };
