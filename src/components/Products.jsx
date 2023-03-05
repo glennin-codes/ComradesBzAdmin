@@ -121,7 +121,7 @@ const deleteImage = (index) => {
  
     const newProductInfo = { ...values,images};
  
-    axios.post("https://uploadercloudinary.onrender.com/car",newProductInfo)
+    axios.post("https://shopifybackend.onrender.com/api/addProduct",newProductInfo)
       .then(({ data }) => {
         
         if (data.code === 1) {

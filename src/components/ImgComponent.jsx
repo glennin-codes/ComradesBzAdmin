@@ -17,7 +17,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import usePrevious from "../assets/hooks/usePrevious";
 export default function ImgComponent({ images, handleColorChange, deleteImage }) {
-  const prevImages =usePrevious(images);
+  // const prevImages =usePrevious(images);
   const refs = useRef(images.map(() => React.createRef()));
 
   const ImageTransition = forwardRef((props, ref) => {
