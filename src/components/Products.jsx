@@ -22,6 +22,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { CSSTransition } from "react-transition-group";
 import "../style/product.css"
 import ImgComponent from "./ImgComponent";
+import axios from "axios";
 export default function Products() {
 {/*states*/}
 const [values, setValues] = useState({});
@@ -86,9 +87,9 @@ const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     reader.onloadend = () => {
       const binaryStr = reader.result;
       const imageObject = {
-        data: binaryStr,
+      data: binaryStr,
         color: "",
-        ref:React.createRef()
+        // ref:React.createRef()
         // initialize the color as an empty string
       };
       setImages(prevState => [...prevState, imageObject]);
@@ -99,7 +100,9 @@ const handleColorChange = (index) => (event) => {
   const newImages = [...images];
   newImages[index].color = event.target.value;
   setImages(newImages);
+  console.log("color change",images)
 };
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop
   });
@@ -113,6 +116,7 @@ const deleteImage = (index) => {
   setIsSelected(prevCount=> prevCount - 1)
  
 };
+console.log(images)
   const handleSubmit = (event) => {
      
     event.preventDefault();
