@@ -20,13 +20,13 @@ import {
  
 
 export default function ImgComponent({images,handleColorChange,deleteImage}) {
-    const ImageTransition = forwardRef((props, ref) => {
+    const ImageTransition =forwardRef ((props, ref) => {
         
-          <CSSTransition
-            nodeRef={ref}
+        return(  <CSSTransition
+            nodeRef ={ref}
             {...props}
           />
-      
+        )
       });
     return (
     <>
@@ -36,7 +36,7 @@ export default function ImgComponent({images,handleColorChange,deleteImage}) {
           {/* image display */}
           <ImageTransition
             key={index}
-            in={true}
+           in={true}
             appear={true}
             timeout={500}
             classNames={{
@@ -70,7 +70,7 @@ export default function ImgComponent({images,handleColorChange,deleteImage}) {
               appear={true}
               timeout={500}
               classNames={{
-                enter: "delete-fade-enter",
+                ent: "delete-fade-enter",
                 enterActive: "delete-fade-enter-active",
                 exit: "delete-fade-exit",
                 exitActive: "delete-fade-exit-active",

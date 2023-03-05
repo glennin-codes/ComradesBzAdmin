@@ -289,7 +289,7 @@ const deleteImage = (index) => {
             </Grid>
  
 {/*map images and color inputs */}
-<ImgComponent images={images} />
+<ImgComponent images={images}  handleColorChange={handleColorChange} deleteImage={deleteImage} />
             <Grid item xs={12}>
               {/* product description textarea */}
               <TextField
