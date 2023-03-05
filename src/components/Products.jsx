@@ -15,15 +15,13 @@ import {
 
 import React from "react";
 import {useCallback,useEffect,useState} from 'react'
-import "../style/product.css"
 import { useDropzone } from "react-dropzone";
 import Toast from "../assets/utils/Toast";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import DeleteIcon from '@mui/icons-material/Delete'
-import IconButton from '@mui/material/IconButton';
 import { CSSTransition } from "react-transition-group";
-
+import "../style/product.css"
+import ImgComponent from "./ImgComponent";
 export default function Products() {
 {/*states*/}
 const [values, setValues] = useState({});
@@ -197,7 +195,7 @@ const deleteImage = (index) => {
               </Box>
             </Grid>
             <Grid item xs={6} md={4}>
-              {/* car body color */}
+             
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <TextField
                   fullWidth
@@ -211,7 +209,7 @@ const deleteImage = (index) => {
               </Box>
             </Grid>
             <Grid item xs={7} md={8}>
-              {/* car transmission status */}
+
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <TextField
                   fullWidth
@@ -289,67 +287,9 @@ const deleteImage = (index) => {
                 </Paper>
               </Box>
             </Grid>
-            <Grid item xs={12}>
-  {/* image and color inputs */}
-  {images.map((image, index) => (
-    <Box key={index} sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}className="image-wrapper">
-      {/* image display */}
-      <CSSTransition
-        in={true}
-        timeout={500}
-        classNames={{
-          enter: "image-fade-enter",
-          enterActive: "image-fade-enter-active",
-          exit: "image-fade-exit",
-          exitActive: "image-fade-exit-active",
-        }}
-        unmountOnExit
-      >
-      <img src={image.data} alt={`Image ${index + 1}`} width="100" height="100"/>
-</CSSTransition>
-      {/* color input */}
-      <FormControl fullWidth variant="standard">
-        <InputLabel>Image {index + 1} Color</InputLabel>
-        <Select value={image.color} onChange={handleColorChange(index)}>
-          <MenuItem value="red">Red</MenuItem>
-          <MenuItem value="blue">Blue</MenuItem>
-          <MenuItem value="green">Green</MenuItem>
-          <MenuItem value="green">Black</MenuItem>
-          <MenuItem value="green">white</MenuItem>
-          <MenuItem value="green">pink</MenuItem>
-          <MenuItem value="green">silver</MenuItem>
-          <MenuItem value="green">yellow</MenuItem>
-        </Select>
-      </FormControl>
-      <IconButton>
-        <CSSTransition
-          in={true}
-          timeout={500}
-          classNames={{
-            enter: "delete-fade-enter",
-            enterActive: "delete-fade-enter-active",
-            exit: "delete-fade-exit",
-            exitActive: "delete-fade-exit-active",
-          }}
-          unmountOnExit
-        >
-          <DeleteIcon
-            sx={{
-              color: "rgb(255, 0, 0)",
-              "&:hover": {
-                color: "rgb(200, 0, 0)",
-                cursor: "pointer",
-              },
-            }}
-            onClick={() => deleteImage(index)}
-          />
-        </CSSTransition>
-      </IconButton>
-    </Box>
-  ))}
-</Grid>
-
-
+ 
+{/*map images and color inputs */}
+<ImgComponent images={images} />
             <Grid item xs={12}>
               {/* product description textarea */}
               <TextField
