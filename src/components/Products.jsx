@@ -16,19 +16,88 @@ import {
 import React from "react";
 import {useCallback,useEffect,useState} from 'react'
 import { useDropzone } from "react-dropzone";
+import Toast from "../assets/utils/Toast";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Products() {
-  const onDrop = useCallback((acceptedFiles, rejectedFiles) =>{
+{/*states*/}
+const [values, setValues] = useState({});
+const [images, setImages] = useState([]);
+ const [status, setStatus] = React.useState("");
+  const [failed, setFailed] = React.useState("");
+  const [error, setError] = React.useState(""); 
+const [uploading, setIsUpLoading] = useState();
+const [isSubmit,setIsSubmit]=useState(false);
+const [selected,setIsSelected]=useState(0);
 
-  })
+const time = 1* 60 * 1000;//waiting time to upload
+useEffect(()=>{
+  if (isSubmit) {
+    window.scrollTo(0, 0);
+  }
+  if (uploading) {
+    toast.loading(uploading);
+    setIsUpLoading();
+  }
+  
+  if (status) {
+    toast.dismiss();
+    toast.success(status);
+    setStatus();
+  }
+  if(error){
+    toast.error(error)
+  }
+},[isSubmit,uploading,error,status])
+const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+  let processedFiles = 0;
+  const count=acceptedFiles.length ;
+  setIsSelected(prevCount=> prevCount + count);
+  console.log(selected);
+  if (selected > 10) {
+    toast.error("Cannot accept more than 10 files.");
+    return;
+  }
+
+  const numberOfAcceptedFiles = Math.min(acceptedFiles.length, 10 - images.length);
+  const EstablishedAcceptedFiles = acceptedFiles.slice(0, numberOfAcceptedFiles);
+
+
+  EstablishedAcceptedFiles.forEach(file => {
+    if (processedFiles >= 10) {
+      toast.error("Only 10 files can be processed at a time.");
+      return;
+    }
+    processedFiles++;
+    if (!file.type.startsWith("image/jpeg") && !file.type.startsWith("image/png") && !file.type.startsWith("image/jpg")) {
+      toast.error(`File ${file.name} has an unsupported format and cannot be processed.`);
+      return;
+    }
+    if (file.size > 6.5 * 1024 * 1024) {
+      toast.error(`File ${file.name} is larger than 6.5 MB and cannot be processed.`);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const binaryStr = reader.result;
+      setImages(prevState => [...prevState, binaryStr]);
+    };
+  });
+}, [selected,images]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop
   });
 
-  const handleValueChange = () => {};
+  const handleValueChange = (prop) =>(event)=> {
+    setValues({ ...values, [prop]: event.target.value });
+  };
   const handleSubmit = () => {};
   return (
     <Box>
+      <Toast time={time}/>
       <Typography variant="h4" align="center" color="primary" fontWeight="bold">
         Add New product In Shop
       </Typography>
@@ -121,19 +190,20 @@ export default function Products() {
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              {/* <Box sx={{ display: "flex", alignItems: "flex-end" }}> */}
+               <Box>
                 <Paper
                   style={{
                     cursor: "pointer",
                     background: "white",
                     color: "#bdbdbd",
                     border: "1px dashed #ccc",
-                    "&:hover": { border: "1px solid #ccc" },
+                    "&:hover": { border: "1px solid magenta" },
                   }}
                   elevation={7}
                 >
                   <div
-                    style={{ padding: "16px", height: "200px" }}
+                    style={{ padding: "16px", alignItems:"center",textAlign:"center" }}
                     {...getRootProps()}
                   >
                     <input {...getInputProps()} />
