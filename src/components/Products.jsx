@@ -294,8 +294,19 @@ const deleteImage = (index) => {
   {images.map((image, index) => (
     <Box key={index} sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}className="image-wrapper">
       {/* image display */}
-      <img src={image.data} alt={`Image ${index + 1}`} width="100" height="100"   className={image.selected ? "selected" : ""}  onClick={() => selectImage(index)} />
-
+      <CSSTransition
+        in={true}
+        timeout={500}
+        classNames={{
+          enter: "image-fade-enter",
+          enterActive: "image-fade-enter-active",
+          exit: "image-fade-exit",
+          exitActive: "image-fade-exit-active",
+        }}
+        unmountOnExit
+      >
+      <img src={image.data} alt={`Image ${index + 1}`} width="100" height="100"/>
+</CSSTransition>
       {/* color input */}
       <FormControl fullWidth variant="standard">
         <InputLabel>Image {index + 1} Color</InputLabel>
@@ -310,17 +321,30 @@ const deleteImage = (index) => {
           <MenuItem value="green">yellow</MenuItem>
         </Select>
       </FormControl>
-      <IconButton onClick={() => deleteImage(index)}>
-  <DeleteIcon   sx={{
-    color: 'rgb(255, 0, 0)',
-    '&:hover': {
-      color: 'rgb(200, 0, 0)',
-      cursor: 'pointer',
-    },
-  }}
-  className="delete-icon"
-   />
-</IconButton>
+      <IconButton>
+        <CSSTransition
+          in={true}
+          timeout={500}
+          classNames={{
+            enter: "delete-fade-enter",
+            enterActive: "delete-fade-enter-active",
+            exit: "delete-fade-exit",
+            exitActive: "delete-fade-exit-active",
+          }}
+          unmountOnExit
+        >
+          <DeleteIcon
+            sx={{
+              color: "rgb(255, 0, 0)",
+              "&:hover": {
+                color: "rgb(200, 0, 0)",
+                cursor: "pointer",
+              },
+            }}
+            onClick={() => deleteImage(index)}
+          />
+        </CSSTransition>
+      </IconButton>
     </Box>
   ))}
 </Grid>
