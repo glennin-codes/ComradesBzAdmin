@@ -1,26 +1,38 @@
-/* CSS */
-.image-wrapper {
-    position: relative;
-  }
-  
-  .image-wrapper img {
-    position: absolute;
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .image-wrapper img.selected {
-    transform: scale(1.2);
-  }
-  
-  .delete-icon {
-    position: absolute;
-    top: 0;
-    right: 0;
+/* For image element */
+.image-fade-enter {
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
   }
   
-  .image-wrapper:hover .delete-icon {
+  .image-fade-enter-active {
     opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+  
+  .image-fade-exit {
+    opacity: 1;
+  }
+  
+  .image-fade-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-out;
+  }
+  
+  /* For delete button */
+  .delete-fade-enter {
+    opacity: 0;
+  }
+  
+  .delete-fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+  
+  .delete-fade-exit {
+    opacity: 1;
+  }
+  
+  .delete-fade-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-out;
   }
   

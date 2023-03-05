@@ -15,12 +15,14 @@ import {
 
 import React from "react";
 import {useCallback,useEffect,useState} from 'react'
+import "../style/product.css"
 import { useDropzone } from "react-dropzone";
 import Toast from "../assets/utils/Toast";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@mui/icons-material/Delete'
 import IconButton from '@mui/material/IconButton';
+import { CSSTransition } from "react-transition-group";
 
 export default function Products() {
 {/*states*/}
@@ -290,9 +292,9 @@ const deleteImage = (index) => {
             <Grid item xs={12}>
   {/* image and color inputs */}
   {images.map((image, index) => (
-    <Box key={index} sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
+    <Box key={index} sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}className="image-wrapper">
       {/* image display */}
-      <img src={image.data} alt={`Image ${index + 1}`} width="100" height="100" />
+      <img src={image.data} alt={`Image ${index + 1}`} width="100" height="100"   className={image.selected ? "selected" : ""}  onClick={() => selectImage(index)} />
 
       {/* color input */}
       <FormControl fullWidth variant="standard">
@@ -315,7 +317,9 @@ const deleteImage = (index) => {
       color: 'rgb(200, 0, 0)',
       cursor: 'pointer',
     },
-  }} />
+  }}
+  className="delete-icon"
+   />
 </IconButton>
     </Box>
   ))}
