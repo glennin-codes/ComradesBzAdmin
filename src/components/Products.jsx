@@ -23,6 +23,7 @@ import { CSSTransition } from "react-transition-group";
 import "../style/product.css"
 import ImgComponent from "./ImgComponent";
 import axios from "axios";
+import { Link } from "react-router-dom";
 export default function Products() {
 {/*states*/}
 const [values, setValues] = useState({});
@@ -320,6 +321,13 @@ console.log(images)
       
                 Add to Database
               </Button>
+
+            </Grid>
+            
+            <Grid item xs={12} sx={{ textAlign: "right" }}>
+              <Typography component={Link} to="/manage">
+                Manage All Products
+              </Typography>
             </Grid>
           </Grid>
         </form>

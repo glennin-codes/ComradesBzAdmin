@@ -16,6 +16,7 @@ import Alert from "@mui/material/Alert"
 
 
 
+
 export default function Manageproducts() {
 
     const [products,setProducts]=useState([])
@@ -53,15 +54,16 @@ fetchproducts()
   return (
     <TableContainer component={Paper}>
       {success && <Alert severity='success'>{success}</Alert>}
-      <Table sx={{width:'100vw',maxWidth:'100vw' }} aria-label="simple table">
-        <TableHead sx={{width:"100vw"}}>
+      <Table sx={{width:'92vw',maxWidth:'95vw' }} aria-label="simple table">
+        <TableHead sx={{width:"90vw"}}>
           <TableRow >
-            <TableCell sx={{width:"10vw"}}>Product Name</TableCell>
-            <TableCell sx={{width:"15vw"}}>Image</TableCell>
-            <TableCell sx={{width:"10vw"}} >Category</TableCell>
-            <TableCell sx={{width:"10vw"}} >Compony</TableCell>
-            <TableCell sx={{width:"10vw"}} >Stock</TableCell>
-            <TableCell sx={{width:"10vw"}} >Price</TableCell>
+            <TableCell sx={{width:"8vw"}}>Product Name</TableCell>
+            <TableCell sx={{width:"8vw"}}>Image</TableCell>
+            <TableCell sx={{width:"8vw"}} >Category</TableCell>
+            <TableCell sx={{width:"8vw"}} >Compony</TableCell>
+            <TableCell sx={{width:"8vw"}} >Stock</TableCell>
+            <TableCell sx={{width:"8vw"}} >Price</TableCell>
+            <TableCell sx={{width:"8vw"}} >Trash</TableCell>
            
            
      
@@ -73,33 +75,33 @@ fetchproducts()
               key={_id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell  sx={{width:"10vw"}} component="th" scope="row">
+              <TableCell  sx={{width:"8vw"}} component="th" scope="row">
                 {name}
               </TableCell>
-              <TableCell  sx={{width:"15vw"}} component="th" scope="row">
-               <img src= {image} alt={''} style={{height:'100px',width:"100px"}}/>
+              <TableCell  sx={{width:"8vw"}} component="th" scope="row">
+               <img src= {image[0]?.url} alt={''} style={{height:'100px',width:"100px"}}/>
               </TableCell>
-              <TableCell  sx={{width:"10vw"}} >
+              <TableCell  sx={{width:"8vw"}} >
                 {category}
               
               </TableCell>
            
-              <TableCell  sx={{width:"10vw"}} >
+              <TableCell  sx={{width:"8vw"}} >
                 {compony}
               
               </TableCell>
            
-              <TableCell  sx={{width:"10vw"}} >
+              <TableCell  sx={{width:"8vw"}} >
                 {stock}
               
               </TableCell>
            
-              <TableCell  sx={{width:"10vw"}} >
+              <TableCell  sx={{width:"8vw"}} >
                 {price}
               
               </TableCell>
            
-              <TableCell  sx={{width:"10vw"}}  >
+              <TableCell  sx={{width:"8vw"}}  >
                 <Typography component={Button}
                 // disabled={currentUser?.email!=='milesmotorssocialmedia@gmail.com'}
                 onClick={
