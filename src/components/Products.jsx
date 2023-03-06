@@ -102,7 +102,7 @@ const handleColorChange = (index) => (event) => {
   const newImages = [...images];
   newImages[index].color = event.target.value;
   setImages(newImages);
-  console.log("color change",images)
+  
 };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
