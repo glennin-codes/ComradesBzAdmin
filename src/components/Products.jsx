@@ -232,6 +232,20 @@ console.log(images)
             </Grid>
             
             <Grid item xs={7} md={8}>
+
+              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                <TextField
+                  fullWidth
+                  label="Company"
+                  variant="standard"
+                  required
+                  text="text"
+                  onChange={handleValueChange("campany")}
+                />
+              </Box>
+            </Grid>
+            
+            <Grid item xs={7} md={8}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <TextField
                   fullWidth

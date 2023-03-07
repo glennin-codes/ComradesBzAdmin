@@ -57,7 +57,7 @@ fetchproducts()
   return (
     <>
     {selectedProduct && (
-      <UpdateProductForm product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+      <UpdateProductForm product={selectedProduct}  onClose={() => setSelectedProduct(null)} />
     )}
     
     <TableContainer component={Paper}>
@@ -68,7 +68,7 @@ fetchproducts()
             <TableCell sx={{width:"8vw"}}>Product Name</TableCell>
             <TableCell sx={{width:"8vw"}}>Image</TableCell>
             <TableCell sx={{width:"8vw"}} >Category</TableCell>
-            <TableCell sx={{width:"8vw"}} >Compony</TableCell>
+            <TableCell sx={{width:"8vw"}} >Company</TableCell>
             <TableCell sx={{width:"8vw"}} >Stock</TableCell>
             <TableCell sx={{width:"8vw"}} >Price</TableCell>
             <TableCell sx={{width:"8vw"}} >Update</TableCell>
@@ -79,7 +79,7 @@ fetchproducts()
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map(({ name, _id, image, category, price,  color, compony,stock }) => (
+          {products.map(({ name, _id, image, category, price,  color, company,stock }) => (
             <TableRow
               key={_id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -96,7 +96,7 @@ fetchproducts()
               </TableCell>
            
               <TableCell  sx={{width:"8vw"}} >
-                {compony}
+                {company}
               
               </TableCell>
            
@@ -117,7 +117,7 @@ fetchproducts()
   size="small"
 
           
-  onClick={() => setSelectedProduct(products)}>
+  onClick={() => setSelectedProduct(_id)}>
     Edit
   </Typography>
 </TableCell>
