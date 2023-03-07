@@ -11,6 +11,7 @@ import axios from 'axios'
 import  Typography from '@mui/material/Typography';
 import Button from "@mui/material/Button"
 import Alert from "@mui/material/Alert"
+import UpdateProductForm from './UpdateProduct';
 
 
 
@@ -18,7 +19,9 @@ import Alert from "@mui/material/Alert"
 
 
 export default function Manageproducts() {
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
+console.log(selectedProduct);
     const [products,setProducts]=useState([])
     const[success,setSuccess]=React.useState("")
     const [refresh, setRefresh] = useState(false);
@@ -52,10 +55,15 @@ fetchproducts()
     };
     
   return (
+    <>
+    {selectedProduct && (
+      <UpdateProductForm product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+    )}
+    
     <TableContainer component={Paper}>
       {success && <Alert severity='success'>{success}</Alert>}
-      <Table sx={{width:'92vw',maxWidth:'95vw' }} aria-label="simple table">
-        <TableHead sx={{width:"90vw"}}>
+      <Table sx={{width:'100vw',maxWidth:'100vw' ,overflowX: 'auto', '&::-webkit-scrollbar': { height: 8 }, '&::-webkit-scrollbar-thumb': { borderRadius: 8, backgroundColor: 'rgba(0, 0, 0, 0.3)'}}} aria-label="simple table">
+        <TableHead sx={{width:"100vw"}}>
           <TableRow >
             <TableCell sx={{width:"8vw"}}>Product Name</TableCell>
             <TableCell sx={{width:"8vw"}}>Image</TableCell>
@@ -63,6 +71,7 @@ fetchproducts()
             <TableCell sx={{width:"8vw"}} >Compony</TableCell>
             <TableCell sx={{width:"8vw"}} >Stock</TableCell>
             <TableCell sx={{width:"8vw"}} >Price</TableCell>
+            <TableCell sx={{width:"8vw"}} >Update</TableCell>
             <TableCell sx={{width:"8vw"}} >Trash</TableCell>
            
            
@@ -100,9 +109,25 @@ fetchproducts()
                 {price}
               
               </TableCell>
+              <TableCell>
+  <Typography component={Button}  
+          
+  aria-label="edit"
+  color="primary"
+  size="small"
+
+          
+  onClick={() => setSelectedProduct(products)}>
+    Edit
+  </Typography>
+</TableCell>
+
            
               <TableCell  sx={{width:"8vw"}}  >
                 <Typography component={Button}
+                
+                color="error"
+                
                 // disabled={currentUser?.email!=='milesmotorssocialmedia@gmail.com'}
                 onClick={
                   ()=>deleteProduct(_id)
@@ -115,5 +140,8 @@ fetchproducts()
         </TableBody>
       </Table>
     </TableContainer>
+    </>
   );
+   
+  
 }
