@@ -57,7 +57,7 @@ fetchproducts()
   return (
     <>
     {selectedProduct && (
-      <UpdateProductForm product={selectedProduct}  onClose={() => setSelectedProduct(null)} />
+      <UpdateProductForm  product={selectedProduct}  onClose={() => setSelectedProduct(null) } setRefresh={setRefresh} />
     )}
     
     <TableContainer component={Paper}>
@@ -117,7 +117,7 @@ fetchproducts()
   size="small"
 
           
-  onClick={() => setSelectedProduct(_id)}>
+  onClick={() => setSelectedProduct({name, _id, category, price,  color, company,stock})}>
     Edit
   </Typography>
 </TableCell>

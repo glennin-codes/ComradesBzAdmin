@@ -1,4 +1,4 @@
-import {  Grid, TextField } from "@mui/material";
+import {  Grid  , TextField } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import Button from "@mui/material/Button";
@@ -10,73 +10,78 @@ import Stack from '@mui/material/Stack';
 import { Box } from "@mui/system";
 import Alert from "@mui/material/Alert"
 
-export default function UpdateProductForm({ _id, onClose}) {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [company, setCompany] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
+export default function UpdateProductForm({product, onClose,setRefresh,}) {
+  const [name, setName] = useState(product.name);
+  const [category, setCategory] = useState(product.category);
+  const [company, setCompany] = useState(product.company);
+  const [price, setPrice] = useState(product.price);
+  const [stock, setStock] = useState(product.stock);
   const [open, setOpen] = useState(false);
-  console.log(_id)
+  const[success,setSuccess]=useState("");
+  console.log(product);
+  console.log(product._id)
 
   const handleSubmit = async (event) => {
 
     event.preventDefault();
     try {
-    const res = await axios.patch(`https://shopifybackend.onrender.com/api/product/${_id}`, {
+    const res = await axios.patch(`https://shopifybackend.onrender.com/api/product/${product._id}`, {
         name,
         category,
-        compony,
+        company,
         price,
         stock,
       });
       if (res.status === 200) {
-        Alert("Product updated succesfull");
-
+        setSuccess("Product updated successfully");
+           setRefresh(prevState => !prevState)
         setOpen(false);
         onClose();
         
       }
      
     } catch (error) {
-      console.error(error);
+     
       alert("There was an error");
+      setOpen(false);
     }
   };
 
   return (
     <div>
+        {success && <Alert severity='success'>{success}</Alert>}
       <Button onClick={() => setOpen(true)}>Update Product</Button>
+    
       <Box maxWidth="sm" sx={{ my: 4, mx: "auto" }}>
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Update Product</DialogTitle>
         <DialogContent >
 
       
-        <Grid xs={6} md={4}>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+        <Grid  item  xs={6} md={4}>
+        <Box sx={{ display: "flex", alignitems: "flex-end" }}>
             <TextField variant='standard' fullWidth  label="Name" value={name} onChange={(event) => setName(event.target.value)} />
            </Box>
               </Grid>
-              <Grid xs={6} md={4}>
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <Grid  item xs={6} md={4}>
+              <Box sx={{ display: "flex", alignitems: "flex-end" }}>
               <TextField label="Category" fullWidth variant='standard' value={category} onChange={(event) => setCategory(event.target.value)} />
             </Box>
               </Grid>
-              <Grid xs={6} md={4}>
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+              <Grid  item xs={6} md={4}>
+              <Box sx={{ display: "flex", alignitems: "flex-end" }}>
               <TextField label="Compony" fullWidth variant='standard' value={company} onChange={(event) => setCompany(event.target.value)} />
               </Box>
               </Grid>
                 
-                <Grid xs={6} md={4}>
-                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                <Grid  item xs={6} md={4}>
+                <Box sx={{ display: "flex", alignitems: "flex-end" }}>
                 <TextField label="Price" fullWidth variant='standard' value={price} onChange={(event) => setPrice(event.target.value)} />
            
                 </Box>
                 </Grid>
-                <Grid xs={6} md={4}>
-                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                <Grid  item xs={6} md={4}>
+                <Box sx={{ display: "flex", alignitems: "flex-end" }}>
                 <TextField label="Stock"  fullWidth variant='standard' value={stock} onChange={(event) => setStock(event.target.value)} />
                 </Box>
                 </Grid>
