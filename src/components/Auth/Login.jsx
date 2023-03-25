@@ -5,18 +5,18 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { NavLink } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
-import useAuthContext from '../../../others/useAuthContext';
-import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
+// import useAuthContext from '../../../others/useAuthContext';
+// import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 
 
 const Login = () => {
     // const { loginEmail, authError, setAuthError, authLoading } = useAuthContext();
 
     // useEffect(() => setAuthError(null), [setAuthError])
-    useEffect(() => {
-        // authError && 
-        setValues({ email: '', password: '', showPassword: '' })
-    }, [])
+    // useEffect(() => {
+    //     // authError && 
+    //     setValues({ email: '', password: '', showPassword: '' })
+    // }, [])
 
     const [values, setValues] = React.useState({
         email: '',
@@ -51,7 +51,7 @@ const Login = () => {
     return (
         <div className="login-container">
             <div className="form-container">
-                <Typography variant="h3" >
+                <Typography variant="h3" sx={{textAlign:'center'}} >
                     <Typewriter
                         options={{ loop: true }}
                         onInit={(typewriter) => {
