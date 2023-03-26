@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText, ListSubheader, TextField, OutlinedInput, Select, Grid, Checkbox, MenuItem } from '@mui/material';
+import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText, ListSubheader, TextField, OutlinedInput, Select, Grid, Checkbox, MenuItem, CircularProgress } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { NavLink } from 'react-router-dom';
@@ -34,7 +34,7 @@ const SignUp = () => {
     latitude: '',
     });
     const [checked, setChecked] = React.useState(false);
-    const [studentChecker, setStudentChecker] = React.useState(false);
+ 
     
    const handleChecked = (event) => {
     setChecked(event.target.checked);
@@ -92,9 +92,12 @@ const SignUp = () => {
            setIsLoading(true);
     try {
       const response = await axios.post('/api/register', values);
+
       const { token } = response.data;
       localStorage.setItem('token', token);
+      setValues('');
       await history.push('/');
+
     } catch (error) {
       console.error(error);
     }
@@ -230,12 +233,17 @@ const SignUp = () => {
      
          
           input={<OutlinedInput label="Location" />}
-          onChange={(event)=>{
+          onChange={()=>(event)=>{
+            
             locationRef.current.value=event.target.value[0]
             setLocationText(event.target.value[0])
-          
+            
   console.log( event.target.value[1])
             setCenter(event.target.value[1])
+            setValues({...values,longitude:center[0].toString(),
+                latitude:center[1].toString(),location:locationText,})
+           
+           
           }}
           onClose={()=>{
             setSearch('')
@@ -305,7 +313,10 @@ setSearch(e.target.value)
 
                     <Button variant="contained" size="large" color="primary"
                         type="submit"
-                        sx={{ width: '100%', mt: 1.5, mb: 4 }}>Sign Up
+                        sx={{ width: '100%', mt: 1.5, mb: 4 }}
+                        disabled={loading}
+                        >
+                             {loading ? <CircularProgress size={24} />: 'Sign Up'}
                     </Button>
                 </form>
 
