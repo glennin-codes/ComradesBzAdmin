@@ -1,46 +1,61 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText, ListSubheader, TextField, OutlinedInput, Select, Grid, Checkbox } from '@mui/material';
+import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText, ListSubheader, TextField, OutlinedInput, Select, Grid, Checkbox, MenuItem } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { NavLink } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
 import SearchIcon from "@mui/icons-material/Search";
+import {useHistory} from 'react-router-dom'
 // import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 import {useRef} from "react"
+import axios from 'axios';
 const SignUp = () => {
+    const history=useHistory();
     const[search,setSearch]=React.useState('')
     const[center,setCenter]=React.useState([])
     const[locationText,setLocationText]=React.useState('')
     const[privacyAlert,setPrivacyAlert]=React.useState('')
       const[placeData,setPlaceData]=React.useState([])
         const[error,setError]=React.useState('')
-        const[loading,setLoading]=React.useState(false)
+        const[loading,setIsLoading]=React.useState(false)
         const [user,setUser]=React.useState('')
     const [values, setValues] = React.useState({
         name: '',
         email: '',
         password: '',
         confirmPassword: '',
+        student:'',
         showPassword: false,
+          phone: '',
+    location: '',
+    school: '',
+    student: false,
+    longitude: '',
+    latitude: '',
     });
     const [checked, setChecked] = React.useState(false);
+    const [studentChecker, setStudentChecker] = React.useState(false);
+    
    const handleChecked = (event) => {
     setChecked(event.target.checked);
   };
+//    const handleCheckedStudent = (event) => {
+//     setStudentChecker(event.target.checked);
+//   };
     const locationRef=useRef();
     React.useEffect(()=>{
 
         const fetchLocation= async ()=>{
         try{
           
-        const {data}=await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${search}.json?country=ke,ug&types=poi,address,neighborhood,locality,place,district,postcode&limit=10&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`)
+        const {data}=await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${search}.json?country=ke,ug&types=poi,address,neighborhood,locality,place,district,postcode&limit=100&access_token=${import.meta.env.VITE_APP_MAPBOX_TOKEN}`)
         const {features}=data
         setPlaceData(features)// an array
         
         
         }
         catch(error){
-        
+        console.error(error)
         return;
         }
                 
@@ -59,8 +74,9 @@ const SignUp = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+
         const { name, email, password, confirmPassword } = values;
         let err;
         // let err;
@@ -71,11 +87,20 @@ const SignUp = () => {
                 password !== confirmPassword ? err = "Password didn't matched" :
                 !(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/).test(password) ?
                         err = "passwords should be a mixture of numbers, letters and atleast a special character. It should also be a minimum of 8 characters" :
-                        name === '' ? err = "Name is required" :
+                        name === '' ? err = "Name is required" : err && setError(err);
                             // signUp(name, email, password);
-        err && setError(err);
-        
+           setIsLoading(true);
+    try {
+      const response = await axios.post('/api/register', values);
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+      await history.push('/');
+    } catch (error) {
+      console.error(error);
     }
+    setIsLoading(false);
+  };
+        
 
 
     return (
@@ -159,25 +184,39 @@ const SignUp = () => {
                     <FormControl sx={{ m: 1 }} color="primary" variant="standard" fullWidth >
                         <InputLabel htmlFor="signUp-name">phone</InputLabel>
                         <Input
-                            id="Mobile"
+                            id="phone"
                             type='text'
-                            defaultValue={values.number}
+                            defaultValue={values.phone}
                             required
-                            onChange={handleChange('number')} 
+                            onChange={handleChange('phone')} 
                             autoComplete="Enter your mobile number"
                             />
                     </FormControl>
+                    <Grid item xs={12} sx={{ m: 1 }}>
+                Are you a Student?
+                  <Checkbox
+        checked={values.student}
+        
+       
+      onChange={(event)=>{
+        setValues({...values, student: event.target.value})
+      }}
+        sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+      />
+              </Grid>
+              {values.student &&
                     <FormControl sx={{ m: 1 }} color="primary" variant="standard" fullWidth >
                         <InputLabel htmlFor="signUp-School">School</InputLabel>
                         <Input
                             id="School"
                             type='text'
-                            defaultValue={values.School}
+                            defaultValue={values.school}
                             required
                             onChange={handleChange('school')} 
                             autoComplete="Enter your School"
                             />
                     </FormControl>
+}
                     <Grid item xs={12} sx={{m: 1 }}>
 <InputLabel id="demo-multiple-name-label">location</InputLabel>
         <Select
