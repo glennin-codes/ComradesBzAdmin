@@ -5,13 +5,16 @@ import { Box } from '@mui/system';
 import { NavLink, } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from 'react-router-dom';
+import {unstable_HistoryRouter} from 'react-router-dom'
 
 // import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 import {useRef} from "react"
 import axios from 'axios';
 const SignUp = () => {
     // const history=unstable_HistoryRouter();
-    const[studentChecker,setStudentChecker]=React.useState(false)
+    const navigate =useNavigate();
+  
     const[search,setSearch]=React.useState('')
     const[center,setCenter]=React.useState([])
     const[locationText,setLocationText]=React.useState('')
@@ -79,25 +82,32 @@ const SignUp = () => {
 
         const { name, email, password, confirmPassword } = values;
         let err;
-        // let err;
-      
-        email === '' ? err = "Email is required" :
-            !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email) ?
-                err = "Enter a valid email" :
-                password !== confirmPassword ? err = "Password didn't matched" :
-                !(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/).test(password) ?
-                        err = "passwords should be a mixture of numbers, letters and atleast a special character. It should also be a minimum of 8 characters" :
-                        name === '' ? err = "Name is required" : err && setError(err);
-                            // signUp(name, email, password);
+
+        if (email === '') {
+          err = "Email is required";
+        } else if (!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)) {
+          err = "Enter a valid email";
+        } else if (password !== confirmPassword) {
+          err = "Password didn't match";
+        } else if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/).test(password)) {
+          err = "Passwords should be a mixture of numbers, letters and at least a special character. It should also be a minimum of 8 characters";
+        } else if (name === '') {
+          err = "Name is required";
+        }
+        
+        if (err) {
+          setError(err);
+          return; // exit function early
+        }
            setIsLoading(true);
     try {
-      const response = await axios.post('/api/register', values);
+      const response = await axios.post('https://shopifybackend.onrender.com/api/user/', values);
 
       const { token } = response.data;
       localStorage.setItem('token', token);
       setValues('');
-    //   await history.push('/');
-    window.history.pushState('/')
+       navigate('/verifyCode');
+   
 
     } catch (error) {
       console.error(error);
@@ -235,7 +245,7 @@ const SignUp = () => {
          
      
          
-          input={<OutlinedInput label="Location" />}
+          input={<OutlinedInput label="Location"  value={locationText}/>}
           onChange={()=>(event)=>{
             
             locationRef.current.value=event.target.value[0]
@@ -308,7 +318,7 @@ setSearch(e.target.value)
       />
               </Grid>
 
-                    <FormHelperText sx={{ color: 'red', mx: 1, textTransform: 'capitalize', height: '15px' }}>{error}</FormHelperText>
+                    <FormHelperText sx={{ color: 'red', mx: 1, textTransform: 'capitalize', height: '15px',marginBottom:'2rem' }}>{error}</FormHelperText>
 
                     {/* <Box sx={{ height: '30px' }}>
                         {authLoading && <LoadingSpinner width="30px" height="30px" />}

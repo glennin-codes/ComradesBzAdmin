@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef } from "react";
-import {useSpring, animated } from "react-spring";
+// import {useSpring, animated } from "react-spring";
 import {
   Button,
   Alert,
@@ -17,22 +17,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import usePrevious from "../assets/hooks/usePrevious";
 export default function ImgComponent({ images, handleColorChange, deleteImage }) {
-  // const prevImages =usePrevious(images);
-  const refs = useRef(images.map(() => React.createRef()));
+  // // const prevImages =usePrevious(images);
+  // const refs = useRef(images.map(() => React.createRef()));
 
-  const ImageTransition = forwardRef((props, ref) => {
-    const spring = useSpring({
-      to: { opacity: 1 },
-      from: { opacity: 0 },
-      reset: true,
-      config: { duration: 500 },
-    });
+  // const ImageTransition = forwardRef((props, ref) => {
+  //   const spring = useSpring({
+  //     to: { opacity: 1 },
+  //     from: { opacity: 0 },
+  //     reset: true,
+  //     config: { duration: 500 },
+  //   });
 
-    return (
-      <animated.div ref={ref} style={spring} {...props} />
-    );
-  });
-
+    // return (
+    //   <animated.div ref={ref} style={spring} {...props} />
+    // );
+ 
   return (
     <>
       <Grid item xs={12}>
@@ -43,8 +42,8 @@ export default function ImgComponent({ images, handleColorChange, deleteImage })
             className="image-wrapper"
           >
             {/* image display */}
-            <ImageTransition key={index}>
-              <animated.img
+            <div key={index}>
+              <img
                 src={image.data}
                 alt={`Image ${index + 1}`}
                 width="100"
@@ -60,7 +59,7 @@ export default function ImgComponent({ images, handleColorChange, deleteImage })
                 // }}
                 
               />
-            </ImageTransition>
+            </div>
             {/* color input */}
             <FormControl fullWidth variant="standard">
               <InputLabel>Image {index + 1} Color</InputLabel>
