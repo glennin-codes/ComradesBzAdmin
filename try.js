@@ -190,7 +190,7 @@ setError(`failed to create an account!${error}`)
           input={<OutlinedInput label="Location" />}
           onChange={(event)=>{
             locationRef.current.value=event.target.value[0]
-            setLocationText(event.target.value[0])
+            setLocationText(event.target.value[2])
           
   console.log( event.target.value[1])
             setCenter(event.target.value[1])

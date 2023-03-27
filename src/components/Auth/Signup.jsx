@@ -68,6 +68,7 @@ const SignUp = () => {
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
+    console.log('location', locationText);
     const handleClickShowPassword = () => {
         setValues({
             ...values,
@@ -107,10 +108,11 @@ const SignUp = () => {
            setError('');
           
     try {
+      
+      const response = await axios.post('https://shopifybackend.onrender.com/api/user/', 
+        values,
+      );
       console.log(values);
-      const response = await axios.post('https://shopifybackend.onrender.com/api/user/',{values,location:locationText,longitude:center[0].toString(),
-      latitude:center[1].toString()});
-
       const { token } = response.data
       localStorage.setItem('token', token);
       setValues('');
@@ -253,13 +255,23 @@ const SignUp = () => {
          
      
          
+        
           input={<OutlinedInput label="Location"   />}
           onChange={(event) => {
             locationRef.current.value = event.target.value[0];
-            setLocationText(event.target.value[0]);
+            setLocationText(locationRef.current.value);
             console.log('selected', event.target.value[1]);
             setCenter(event.target.value[1]);
-            console.log('location', locationText);
+
+           setValues({
+              ...values,
+              location: event.target.value[0],
+              longitude: event.target.value[1][0],
+              latitude: event.target.value[1][1],
+
+            
+           })
+          
           }}
           onClose={()=>{
             setSearch('')
@@ -307,6 +319,7 @@ setSearch(e.target.value)
             <MenuItem
               key={center}
               value={[place_name,center]}
+             
               
             >
               {place_name}
