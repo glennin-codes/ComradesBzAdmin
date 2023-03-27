@@ -80,19 +80,22 @@ const SignUp = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const { name, email, password, confirmPassword } = values;
+        const { name, email, password, confirmPassword,phone } = values;
         let err;
 
         if (email === '') {
           err = "Email is required";
         } else if (!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)) {
-          err = "Enter a valid email";
+          err = "Enter a valid email!";
         } else if (password !== confirmPassword) {
-          err = "Password didn't match";
+        } else if (!(/^\+(?:[0-9] ?){6,14}[0-9]$/).test(phone)) {
+          err = "Your mobile number should have valid  include a country code! ..ie +2547123456789";
+        } else if (password !== confirmPassword) {
+          err = "Password provided didn't match!";
         } else if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/).test(password)) {
-          err = "Passwords should be a mixture of numbers, letters and at least a special character. It should also be a minimum of 8 characters";
+          err = "Passwords should be a mixture of numbers, letters and at least a special character. It should also be a minimum of 8 characters and have at least a capital letter!";
         } else if (name === '') {
-          err = "Name is required";
+          err = "Name is required!";
         }
         
         if (err) {
@@ -100,7 +103,9 @@ const SignUp = () => {
           return; // exit function early
         }
            setIsLoading(true);
+           setError('');
     try {
+      console.log(values);
       const response = await axios.post('https://shopifybackend.onrender.com/api/user/', values);
 
       const { token } = response.data;
@@ -245,7 +250,7 @@ const SignUp = () => {
          
      
          
-          input={<OutlinedInput label="Location"  value={locationText}/>}
+          input={<OutlinedInput label="Location"  />}
           onChange={()=>(event)=>{
             
             locationRef.current.value=event.target.value[0]
@@ -253,8 +258,8 @@ const SignUp = () => {
             
   console.log( event.target.value[1])
             setCenter(event.target.value[1])
-            setValues({...values,longitude:center[0].toString(),
-                latitude:center[1].toString(),location:locationText,})
+            setValues({...values,longitude:center && center[0].toString(),
+                latitude:center && center[1].toString(),location:locationText && locationText,})
            
            
           }}
@@ -264,6 +269,9 @@ const SignUp = () => {
                renderValue={() => locationText}
         >
             <ListSubheader>
+             
+            
+              
            <TextField
            size="small"
               // Autofocus on textfield
@@ -318,8 +326,10 @@ setSearch(e.target.value)
       />
               </Grid>
 
-                    <FormHelperText sx={{ color: 'red', mx: 1, textTransform: 'capitalize', height: '15px',marginBottom:'2rem' }}>{error}</FormHelperText>
-
+                   { 
+                   
+                 error &&  <FormHelperText sx={{ color: 'red', mx: 1, textTransform: 'capitalize', height: '15px',marginBottom:'2rem' }}>{error}</FormHelperText>
+}
                     {/* <Box sx={{ height: '30px' }}>
                         {authLoading && <LoadingSpinner width="30px" height="30px" />}
                     </Box> */}
