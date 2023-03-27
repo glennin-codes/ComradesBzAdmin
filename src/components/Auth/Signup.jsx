@@ -77,6 +77,7 @@ const SignUp = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -104,11 +105,13 @@ const SignUp = () => {
         }
            setIsLoading(true);
            setError('');
+          
     try {
       console.log(values);
-      const response = await axios.post('https://shopifybackend.onrender.com/api/user/', values);
+      const response = await axios.post('https://shopifybackend.onrender.com/api/user/',{values,location:locationText,longitude:center[0].toString(),
+      latitude:center[1].toString()});
 
-      const { token } = response.data;
+      const { token } = response.data
       localStorage.setItem('token', token);
       setValues('');
        navigate('/verifyCode');
@@ -250,18 +253,13 @@ const SignUp = () => {
          
      
          
-          input={<OutlinedInput label="Location"  />}
-          onChange={()=>(event)=>{
-            
-            locationRef.current.value=event.target.value[0]
-            setLocationText(event.target.value[0])
-            
-  console.log( event.target.value[1])
-            setCenter(event.target.value[1])
-            setValues({...values,longitude:center && center[0].toString(),
-                latitude:center && center[1].toString(),location:locationText && locationText,})
-           
-           
+          input={<OutlinedInput label="Location"   />}
+          onChange={(event) => {
+            locationRef.current.value = event.target.value[0];
+            setLocationText(event.target.value[0]);
+            console.log('selected', event.target.value[1]);
+            setCenter(event.target.value[1]);
+            console.log('location', locationText);
           }}
           onClose={()=>{
             setSearch('')
