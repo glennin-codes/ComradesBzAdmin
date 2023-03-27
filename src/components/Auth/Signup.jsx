@@ -2,15 +2,16 @@ import React, { useEffect } from 'react';
 import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText, ListSubheader, TextField, OutlinedInput, Select, Grid, Checkbox, MenuItem, CircularProgress } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box } from '@mui/system';
-import { NavLink } from 'react-router-dom';
+import { NavLink, } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
 import SearchIcon from "@mui/icons-material/Search";
-import {useHistory} from 'react-router-dom'
+
 // import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 import {useRef} from "react"
 import axios from 'axios';
 const SignUp = () => {
-    const history=useHistory();
+    // const history=unstable_HistoryRouter();
+    const[studentChecker,setStudentChecker]=React.useState(false)
     const[search,setSearch]=React.useState('')
     const[center,setCenter]=React.useState([])
     const[locationText,setLocationText]=React.useState('')
@@ -24,7 +25,6 @@ const SignUp = () => {
         email: '',
         password: '',
         confirmPassword: '',
-        student:'',
         showPassword: false,
           phone: '',
     location: '',
@@ -39,9 +39,9 @@ const SignUp = () => {
    const handleChecked = (event) => {
     setChecked(event.target.checked);
   };
-//    const handleCheckedStudent = (event) => {
-//     setStudentChecker(event.target.checked);
-//   };
+   const handleCheckedStudent = (event) => {
+    setStudentChecker(event.target.checked);
+  };
     const locationRef=useRef();
     React.useEffect(()=>{
 
@@ -96,7 +96,8 @@ const SignUp = () => {
       const { token } = response.data;
       localStorage.setItem('token', token);
       setValues('');
-      await history.push('/');
+    //   await history.push('/');
+    window.history.pushState('/')
 
     } catch (error) {
       console.error(error);
@@ -198,11 +199,13 @@ const SignUp = () => {
                     <Grid item xs={12} sx={{ m: 1 }}>
                 Are you a Student?
                   <Checkbox
+        // checked={studentChecker}
         checked={values.student}
         
        
       onChange={(event)=>{
-        setValues({...values, student: event.target.value})
+        // handleCheckedStudent
+        setValues({...values, student: event.target.checked})
       }}
         sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
       />
