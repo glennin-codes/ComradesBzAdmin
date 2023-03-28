@@ -120,15 +120,13 @@ const SignUp = () => {
         values,
        
       );
-      const { data ,status,} = await datas.response;
+      const { data ,status,} = datas.response;
 
 
 
        console.log('data' ,data);
-     if (status==409){
-        setError('User already exists')
-     }
-     if(status==201)
+   
+     if(status===201)
      {
       const { token } = data;
       localStorage.setItem('token', token);
@@ -136,22 +134,25 @@ const SignUp = () => {
        navigate('/verifyCode');
 
      }
-    if (status===500){
-        setError('Something went wrong, try again later ')
-     }
-      
     
-     else{
-        setError('network error,check on your network connection and try again')
-        
-     }
-      
 
       
    
 
     } catch (error) {
+      const { status } = error.response;
+      console.log('code ', status);
+      if (status === 409) {
+        setError('User already exists');
+      } else if (status === 500) {
+        setError('Something went wrong, try again later ');
+      } else {
+        setError('Network error, check your network connection and try again');
+      }
+      
+      
       console.error(error);
+
     }
     setIsLoading(false);
   };
