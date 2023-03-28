@@ -109,7 +109,7 @@ const SignUp = () => {
           
     try {
       
-      const response = await axios.post('https://shopifybackend.onrender.com/api/user/', 
+      const response = await axios.post('https://comradesbizapi.azurewebsites.net/api/user/', 
         values,
       );
       console.log(values);
