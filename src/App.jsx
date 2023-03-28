@@ -18,9 +18,9 @@ function App() {
     <Routes>
       <Route path="/" element={<Products />} />
       <Route path="/manage" element={<Manageproducts />} />
-      <Route path="/Auth/login" element={<Login />} />
-      <Route path="/Auth/signup" element={<SignUp />} />
-      <Route path="/verifyCode" element={<VerifyEmail />} />
+      <Route path="/auth/login" element={<Login />} />
+      <Route path="/auth/signup" element={<SignUp />} />
+      <Route path="/verifycode" element={<VerifyEmail />} />
     </Routes>
      
      </BrowserRouter>
