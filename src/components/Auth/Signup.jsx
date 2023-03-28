@@ -140,23 +140,24 @@ const SignUp = () => {
    
 
     } catch (error) {
-      const { status } = error.response;
-      console.log('code ', status);
-      if (status === 409) {
-        setError('User already exists');
-      } else if (status === 500) {
-        setError('Something went wrong, try again later ');
+      if (error.response && error.response.status) {
+        const { status } = error.response;
+        console.log('code ', status);
+        if (status === 409) {
+          setError('User already exists');
+        } else if (status === 500) {
+          setError('Something went wrong, try again later');
+        } else {
+          setError('Network error, check your network connection and try again');
+        }
       } else {
-        setError('Network error, check your network connection and try again');
+        setError('An unexpected error occurred');
+        console.error(error);
       }
-      
-      
-      console.error(error);
-
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  };
-        
+    
+  }
 
 
     return (
