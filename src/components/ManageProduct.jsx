@@ -12,6 +12,7 @@ import  Typography from '@mui/material/Typography';
 import Button from "@mui/material/Button"
 import Alert from "@mui/material/Alert"
 import UpdateProductForm from './UpdateProduct';
+import { Grid } from '@mui/material';
 
 
 
@@ -140,6 +141,11 @@ fetchproducts()
         </TableBody>
       </Table>
     </TableContainer>
+    <Grid item xs={12} sx={{ textAlign: "right" ,color:'magenta',fontSize:'2.5rem'}}>
+              <Typography component={Link} to="/admin">
+                add more products to database
+              </Typography>
+            </Grid>
     </>
   );
    

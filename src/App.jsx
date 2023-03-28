@@ -16,9 +16,9 @@ function App() {
 
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Products />} />
+      <Route path="/admin" element={<Products />} />
       <Route path="/manage" element={<Manageproducts />} />
-      <Route path="/auth/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
       <Route path="/auth/signup" element={<SignUp />} />
       <Route path="/verifycode" element={<VerifyEmail />} />
     </Routes>

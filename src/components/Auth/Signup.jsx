@@ -6,45 +6,42 @@ import { NavLink, } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from 'react-router-dom';
-import {unstable_HistoryRouter} from 'react-router-dom'
 
 // import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 import {useRef} from "react"
 import axios from 'axios';
 const SignUp = () => {
-    // const history=unstable_HistoryRouter();
+   
     const navigate =useNavigate();
   
-    const[search,setSearch]=React.useState('')
-    const[center,setCenter]=React.useState([])
-    const[locationText,setLocationText]=React.useState('')
-    const[privacyAlert,setPrivacyAlert]=React.useState('')
-      const[placeData,setPlaceData]=React.useState([])
-        const[error,setError]=React.useState('')
-        const[loading,setIsLoading]=React.useState(false)
-        const [user,setUser]=React.useState('')
-    const [values, setValues] = React.useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        showPassword: false,
+    const[search,setSearch]=React.useState('');
+    const[newValues,setNewValues]=React.useState({});
+    const[locationText,setLocationText]=React.useState('');
+    const[privacyAlert,setPrivacyAlert]=React.useState('');
+      const[placeData,setPlaceData]=React.useState([]);
+        const[error,setError]=React.useState('');
+        const[loading,setIsLoading]=React.useState(false);
+        // const [user,setUser]=React.useState('');
+        const [values, setValues] = React.useState({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
           phone: '',
-    location: '',
-    school: '',
-    student: false,
-    longitude: '',
-    latitude: '',
-    });
+          showPassword: false,
+          student: false,
+          location: '',
+          longitude:'',
+          latitude:'',
+
+        });
     const [checked, setChecked] = React.useState(false);
  
     
    const handleChecked = (event) => {
     setChecked(event.target.checked);
   };
-   const handleCheckedStudent = (event) => {
-    setStudentChecker(event.target.checked);
-  };
+ 
     const locationRef=useRef();
     React.useEffect(()=>{
 
@@ -78,16 +75,18 @@ const SignUp = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    console.log('name',values.name)
     
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         const { name, email, password, confirmPassword,phone } = values;
+        console.log('name after S',name)
         let err;
 
         if (email === '') {
           err = "Email is required";
-        } else if (!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)) {
+        } else if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email)) {
           err = "Enter a valid email!";
         } else if (password !== confirmPassword) {
         } else if (!(/^\+(?:[0-9] ?){6,14}[0-9]$/).test(phone)) {
@@ -104,19 +103,46 @@ const SignUp = () => {
           setError(err);
           return; // exit function early
         }
+        setNewValues({...values
+         })
+         delete newValues.confirmPassword;
+          delete newValues.showPassword;
+          setValues(newValues);
+
+
+       
            setIsLoading(true);
            setError('');
           
     try {
-      
+     
       const response = await axios.post('https://comradesbizapi.azurewebsites.net/api/user/', 
         values,
+       
       );
-      console.log(values);
+     if (response.status==409){
+        setError('User already exists')
+     }
+     if(response.status=201)
+     {
       const { token } = response.data
       localStorage.setItem('token', token);
       setValues('');
        navigate('/verifyCode');
+
+     }
+    if (response.status===500){
+        setError('Something went wrong, try again later ')
+     }
+      
+    
+     else{
+        setError('network error,check on your network connection and try again')
+        
+     }
+      
+
+      
    
 
     } catch (error) {
@@ -219,12 +245,11 @@ const SignUp = () => {
                     <Grid item xs={12} sx={{ m: 1 }}>
                 Are you a Student?
                   <Checkbox
-        // checked={studentChecker}
         checked={values.student}
         
        
       onChange={(event)=>{
-        // handleCheckedStudent
+        
         setValues({...values, student: event.target.checked})
       }}
         sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
@@ -261,13 +286,13 @@ const SignUp = () => {
             locationRef.current.value = event.target.value[0];
             setLocationText(locationRef.current.value);
             console.log('selected', event.target.value[1]);
-            setCenter(event.target.value[1]);
+            // setCenter(event.target.value[1]);
 
            setValues({
               ...values,
               location: event.target.value[0],
-              longitude: event.target.value[1][0],
-              latitude: event.target.value[1][1],
+              longitude: event.target.value[1][0].toString(),
+              latitude: event.target.value[1][1].toString(),
 
             
            })
@@ -356,7 +381,7 @@ setSearch(e.target.value)
 
                 <Box>
                     <Typography sx={{ textAlign: 'center' }}>
-                        Already have an account? <NavLink to="/auth/login"
+                        Already have an account? <NavLink to="/"
                             style={{ color: 'red' }}>Login</NavLink>
                     </Typography>
                 </Box>
