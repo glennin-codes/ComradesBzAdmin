@@ -116,22 +116,27 @@ const SignUp = () => {
           
     try {
      
-      const response = await axios.post('https://comradesbizapi.azurewebsites.net/api/user/', 
+      const datas= await axios.post('https://comradesbizapi.azurewebsites.net/api/user/', 
         values,
        
       );
-     if (response.status==409){
+      const { data ,status,} = await datas.response;
+
+
+
+       console.log(data);
+     if (status==409){
         setError('User already exists')
      }
-     if(response.status=201)
+     if(status==201)
      {
-      const { token } = response.data
+      const { token } = data;
       localStorage.setItem('token', token);
       setValues('');
        navigate('/verifyCode');
 
      }
-    if (response.status===500){
+    if (status===500){
         setError('Something went wrong, try again later ')
      }
       
