@@ -124,7 +124,7 @@ const SignUp = () => {
 
 
 
-       console.log(data);
+       console.log('data' ,data);
      if (status==409){
         setError('User already exists')
      }
