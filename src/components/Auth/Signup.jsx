@@ -133,7 +133,7 @@ const SignUp = () => {
          localStorage.setItem('token', token);
          console.log('token', token);
          setValues('');
-          navigate('/landingPage');
+         navigate(`/landingPage?name=${encodeURIComponent(name)}`); // Pass name as URL parameter
           
    
         }else{

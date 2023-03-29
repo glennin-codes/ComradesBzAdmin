@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {  useLocation, useNavigate } from 'react-router-dom';
 import { css } from '@emotion/react';
 import ClipLoader from 'react-spinners/ClipLoader';
+import axios from 'axios';
 
 const override = css `display: block;
 margin: 0 auto;
@@ -17,23 +18,22 @@ function VerifyEmail() {
     const searchParams = new URLSearchParams(location.search);
     const code = searchParams.get('code');
 
-    // if (!code) {
-    //  navigate('/');
-    //   return;
-    // }
+    if (!code) {
+     navigate('/');
+      return;
+    }
 
     // Call an API to check if the verification code is valid and mark the user's email as verified
     // This could be done using axios or fetch
 
-    // Here's an example of what the API call might look like using axios:
-    // axios.post('/api/verify-email', { code })
-    //   .then((response) => {
-    //     setVerifying(false);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     history.push('/');
-    //   });
+    axios.post('/api/verifyCode', { code })
+      .then((response) => {
+        setVerifying(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        history.push('/');
+      });
 
     // For this example, we'll just simulate the API call with a timeout
     setTimeout(() => {
