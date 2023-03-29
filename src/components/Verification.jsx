@@ -9,7 +9,7 @@ margin: 0 auto;
 border-color: red; `;
    
 
-function VerifyEmail async () {
+const VerifyEmail = async ()=> {
   const navigate= useNavigate();
   const location = useLocation();
   const [verifying, setVerifying] = useState(true);
@@ -26,102 +26,103 @@ function VerifyEmail async () {
       return;
     }
 
-    // Call an API to check if the verification code is valid and mark the user's email as verified
-    // This could be done using axios or fetch
-try {
-  const response=await axios.post('https://comradesbizapi.azurewebsites.net/api/verifyCode', { code,email })
-  if( response ){
-    console.log(response.data);
-    const{data,status}=response
-    if(status===200){
-      setVerifying(false);
-      setSucces(data.message);
 
-      setTimeOut(()=>{
-      
-        navigate('/admin');
-
-      },
-      3000);
-     
-    }
-    else if(status === 400 ){
-      setVerifying(false);
-      setError(data.error);
-      setTimeOut(()=>{
-       
-        navigate('/auth/signup');
-
-      },
-      3000);
-    }
-    else{
-      setVerifying(false);
-      setError(data.error);
-      setTimeOut(()=>{
-       
-        navigate('/auth/signup');
-
-      },
-      3000);
-      
-    }
-  }else{
-    setError('kindly try again later');
-    setVerifying(false);
-    setTimeOut(()=>{
-       
-      navigate('/auth/signup');
-
-    },
-    3000);
-  }
-
-} catch (error) {
- if(error && error.response){
-    const{data,status}=error.response;
-    if(status === 400){
-      setVerifying(false);
-      setError(data.error,'kindly register');
-      setTimeOut(()=>{
-       
-        navigate('/auth/signup');
-
-      },
-      3000);
-
-     
-    }
-    else if(status === 500){
-      setVerifying(false);
-      setError(data.error,'kindly try again later');
-      setTimeOut(()=>{
-        navigate('/auth/signup');
-      },
-      3000);
-
-    }else{
-      setVerifying(false);
-      setError('network error check your connection and try again later');
-      setTimeOut(()=>{
-       
-        navigate('/auth/signup');
-
-      },
-      3000);
-    }
- }
-  
-}
     
     
   }, [location.search]);
+ 
+    // Call an API to check if the verification code is valid and mark the user's email as verified
+    // This could be done using axios or fetch
+ try {
+      const response= await axios.post('https://comradesbizapi.azurewebsites.net/api/verifyCode', { code,email })
+      if( response ){
+        console.log(response.data);
+        const{data,status}=response
+        if(status===200){
+          setVerifying(false);
+          setSucces(data.message);
+    
+          setTimeOut(()=>{
+          
+            navigate('/admin');
+    
+          },
+          3000);
+         
+        }
+        else if(status === 400 ){
+          setVerifying(false);
+          setError(data.error);
+          setTimeOut(()=>{
+           
+            navigate('/auth/signup');
+    
+          },
+          3000);
+        }
+        else{
+          setVerifying(false);
+          setError(data.error);
+          setTimeOut(()=>{
+           
+            navigate('/auth/signup');
+    
+          },
+          3000);
+          
+        }
+      }else{
+        setError('kindly try again later');
+        setVerifying(false);
+        setTimeOut(()=>{
+           
+          navigate('/auth/signup');
+    
+        },
+        3000);
+      }
+    
+    } catch (error) {
+     if(error && error.response){
+        const{data,status}=error.response;
+        if(status === 400){
+          setVerifying(false);
+          setError(data.error,'kindly register');
+          setTimeOut(()=>{
+           
+            navigate('/auth/signup');
+    
+          },
+          3000);
+    
+         
+        }
+        else if(status === 500){
+          setVerifying(false);
+          setError(data.error,'kindly try again later');
+          setTimeOut(()=>{
+            navigate('/auth/signup');
+          },
+          3000);
+    
+        }else{
+          setVerifying(false);
+          setError('network error check your connection and try again later');
+          setTimeOut(()=>{
+           
+            navigate('/auth/signup');
+    
+          },
+          3000);
+        }
+     }
 
   const handleRedirect = () => {
     if (!verifying) {
       navigate('/admin');
     }
   };
+}
 
   return (
     <div css={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10rem' }}>

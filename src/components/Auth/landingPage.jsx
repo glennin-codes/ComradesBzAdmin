@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Box, Typography } from '@mui/material';
 import './landing.css';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Container = styled(Box)`
   display: flex;
@@ -27,22 +27,34 @@ const LandingPage = () => {
     const { search } = useLocation();
     const name = new URLSearchParams(search).get('name');
   return (
-    <Container sx={{backgroundColor:'#f1f1f1',padding:'2rem'}}> 
+     <>
+     <div className='wrapper'> 
+     <Container sx={{ backgroundColor: '#f1f1f1', padding: '2rem' }}>
       <Message variant="h5" align="center">
         Hey, {name}!
       </Message>
-      <div >
-        <Typography variant="body1" align="center" >
+      <div>
+        <Typography variant="body1" align="center">
           A verification link has been sent to your email.
         </Typography>
-        <Typography variant="body1" align="center" >
-          Kindly visit your email to complete the registration process.
+       
+        <Typography variant="body1" align="center">
+          Kindly visit your email to complete the registration process.<br/>
+          <Typography  component={Link} variant='body1' align='center'  to="/auth/signup">
+          <em>
+            if you provided an invalid email  kindly click this link to return to registration
+          </em>
+          </Typography>
         </Typography>
+        
+      
         <Typography variant="body1" component="p" align="center">
-        We believe that together, we can achieve great things and make a positive impact in the world. Welcome to our community!
-      </Typography>
+          We believe that together, we can achieve great things and make a positive impact in the world. Welcome to our community!
+        </Typography>
       </div>
     </Container>
+    </div>
+    </>
   );
 };
 
