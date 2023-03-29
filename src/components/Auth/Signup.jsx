@@ -7,7 +7,7 @@ import Typewriter from 'typewriter-effect';
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from 'react-router-dom';
 
-// import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
+
 import {useRef} from "react"
 import axios from 'axios';
 const SignUp = () => {
@@ -15,7 +15,7 @@ const SignUp = () => {
     const navigate =useNavigate();
   
     const[search,setSearch]=React.useState('');
-    const[newValues,setNewValues]=React.useState({});
+   
     const[locationText,setLocationText]=React.useState('');
     const[privacyAlert,setPrivacyAlert]=React.useState('');
       const[placeData,setPlaceData]=React.useState([]);
@@ -103,8 +103,8 @@ const SignUp = () => {
           setError(err);
           return; // exit function early
         }
-        setNewValues({...values
-         })
+        const newValues={...values
+         }
          delete newValues.confirmPassword;
           delete newValues.showPassword;
           setValues(newValues);
@@ -152,11 +152,11 @@ const SignUp = () => {
         } else if (status === 500) {
           setError('Something went wrong, try again later');
         } else {
-          setError('Network error, check your network connection and try again');
+          setError('An unexpected error occurred')
+         
         }
       } else {
-        setError('An unexpected error occurred');
-        console.error(error);
+        setError('Network error, check your network connection and try again');
       }
       setIsLoading(false);
     }
@@ -273,7 +273,7 @@ const SignUp = () => {
                             id="School"
                             type='text'
                             defaultValue={values.school}
-                            required
+                            
                             onChange={handleChange('school')} 
                             autoComplete="Enter your School"
                             />

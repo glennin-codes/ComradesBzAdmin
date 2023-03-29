@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText } from '@mui/material';
+import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText, CircularProgress } from '@mui/material';
 import "./Login.css";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box } from '@mui/system';
@@ -21,8 +21,9 @@ const Login = () => {
     //     // authError && 
     //     setValues({ email: '', password: '', showPassword: '' })
     // }, [])
-const[error,setError]=useState(null)
-const[succes,setSucces]=useState(null)
+const[error,setError]=useState(null);
+const[succes,setSucces]=useState(null);
+const[loading,setIsLoading]=useState(false);
     const [values, setValues] = React.useState({
         email: '',
         password: '',
@@ -53,16 +54,16 @@ const[succes,setSucces]=useState(null)
 
         if(email === ''){
             err = "Email is required" ;
-            return;
+          
         }
          
-           else if(!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)){
+           else if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(email)){
             err = "Enter a valid email";
-            return;
+            
            } 
           else if ( password === '' ){
-               err = "Password is required" ;
-               return;
+               err = "Password is required";
+               
           }
           if (err) {
             setError(err);
@@ -75,12 +76,16 @@ const[succes,setSucces]=useState(null)
                 };
                 delete newValues.showPassword
                 setValues(newValues);
+                setIsLoading(true);
+                setError(null);
+              
 
        try {
         const response=await axios.post('https://comradesbizapi.azurewebsites.net/api/user/login',values);
         if( response ){
             console.log(response.data);
             const{data,status}=response
+            setIsLoading(false);
             if(status===200){
                 const {token}=data
                 localStorage.setItem('token', token);
@@ -101,7 +106,7 @@ const[succes,setSucces]=useState(null)
                 console.log(data.error);
              
               setError(data.error);
-             
+            
         
              
             }
@@ -109,13 +114,16 @@ const[succes,setSucces]=useState(null)
               
               setError(data.error,'kindly try again later');
               
-        
             }else{
              
-              setError('network error check your connection and try again later');
-             
+              setError('Timeout,something went wrong');
+              
             }
+        }else{
+            setError('network error check your connection and try again later')
+            
         }
+        setIsLoading(false);
     }
 }    
     return (
@@ -178,8 +186,10 @@ const[succes,setSucces]=useState(null)
                         {authLoading && <LoadingSpinner width="30px" height="30px" />}
                     </Box> */}
                     <Button variant="contained" size="large" color="primary" type="submit"
-                        sx={{ width: '100%', mt: 1.5, mb: 4 }}>
-                        Login
+                        sx={{ width: '100%', mt: 1.5, mb: 4 }}
+                        disabled={loading}
+                        >
+                        {loading?<CircularProgress size={24} />: 'Login'}
                     </Button>
 
                 </form>

@@ -128,7 +128,7 @@ console.log(images)
  
     const newProductInfo = { ...values,images};
  
-    axios.post("https://shopifybackend.onrender.com/api/addProduct",newProductInfo)
+    axios.post("https://comradesbizapi.azurewebsites.net/api/addProduct",newProductInfo)
       .then(({ data }) => {
         
         if (data.code === 1) {
