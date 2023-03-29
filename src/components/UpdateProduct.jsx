@@ -1,6 +1,6 @@
 import {  Grid  , TextField } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -11,7 +11,7 @@ import { Box } from "@mui/system";
 import Alert from "@mui/material/Alert"
 import { useNavigate } from "react-router-dom";
 
-export default function UpdateProductForm({product, onClose,setRefresh,}) {
+export default function UpdateProductForm({product, onClose,setRefresh}) {
   const [name, setName] = useState(product.name);
   const [category, setCategory] = useState(product.category);
   const [company, setCompany] = useState(product.company);
@@ -119,7 +119,12 @@ export default function UpdateProductForm({product, onClose,setRefresh,}) {
           
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={() => {
+          setOpen(false)
+             setRefresh(prevState => !prevState);
+             onClose()
+          }
+          }>Cancel</Button>
           <Button onClick={handleSubmit}>Update</Button>
         </DialogActions>
       </Dialog>
