@@ -53,12 +53,22 @@ const[succes,setSucces]=useState(null)
 
         if(email === ''){
             err = "Email is required" ;
+            return;
         }
          
-            !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email) ?
-                err = "Enter a valid email" :
-                password === '' ? err = "Password is required" :
-                err && setError(err);
+           else if(!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)){
+            err = "Enter a valid email";
+            return;
+           } 
+          else if ( password === '' ){
+               err = "Password is required" ;
+               return;
+          }
+          if (err) {
+            setError(err);
+            return; // exit function early
+          }
+              
 
                 const newValues={
                     ...values
