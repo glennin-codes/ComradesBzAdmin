@@ -3,13 +3,17 @@ import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input,
 import "./Login.css";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box } from '@mui/system';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
+import { useState } from 'react';
+import axios from 'axios';
 // import useAuthContext from '../../../others/useAuthContext';
 // import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 
 
 const Login = () => {
+
+    const navigate =useNavigate();
     // const { loginEmail, authError, setAuthError, authLoading } = useAuthContext();
 
     // useEffect(() => setAuthError(null), [setAuthError])
@@ -17,7 +21,8 @@ const Login = () => {
     //     // authError && 
     //     setValues({ email: '', password: '', showPassword: '' })
     // }, [])
-
+const[error,setError]=useState(null)
+const[succes,setSucces]=useState(null)
     const [values, setValues] = React.useState({
         email: '',
         password: '',
@@ -36,18 +41,73 @@ const Login = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         const { email, password } = values;
-        let err = null;
-        email === '' ? err = "Email is required" :
+       
+
+      
+
+       
+        let err
+
+        if(email === ''){
+            err = "Email is required" ;
+        }
+         
             !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email) ?
                 err = "Enter a valid email" :
                 password === '' ? err = "Password is required" :
-                    // loginEmail(email, password);
-        // err && setAuthError(err);
-        event.preventDefault();
-    }
+                err && setError(err);
 
+                const newValues={
+                    ...values
+                };
+                delete newValues.showPassword
+                setValues(newValues);
+
+       try {
+        const response=await axios.post('https://comradesbizapi.azurewebsites.net/api/user/login',values);
+        if( response ){
+            console.log(response.data);
+            const{data,status}=response
+            if(status===200){
+                const {token}=data
+                localStorage.setItem('token', token);
+                console.log('token', token);
+                setValues('');
+              setSucces("logged in succesfull");
+              navigate('/admin');
+        
+         
+             
+            }
+        }
+        
+        }catch (error) {
+         if(error && error.response){
+            const{data,status}=error.response;
+            if(status === 401){
+                console.log(data.error);
+             
+              setError(data.error);
+             
+        
+             
+            }
+            else if(status === 500){
+              
+              setError(data.error,'kindly try again later');
+              
+        
+            }else{
+             
+              setError('network error check your connection and try again later');
+             
+            }
+        }
+    }
+}    
     return (
         <div className="login-container">
             <div className="form-container">
@@ -96,7 +156,10 @@ const Login = () => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <FormHelperText sx={{
                             color: 'red', mx: 1, textTransform: 'capitalize'
-                        }}>error</FormHelperText>
+                        }}>{error}</FormHelperText>
+                        <FormHelperText sx={{
+                            color: 'blue', mx: 1, textTransform: 'capitalize'
+                        }}>{succes}</FormHelperText>
 
                         <Typography sx={{ ml: 4 }}>Forgot Password</Typography>
                     </Box>
@@ -120,6 +183,7 @@ const Login = () => {
             </div>
         </div>
     );
-};
+
+}
 
 export default Login;

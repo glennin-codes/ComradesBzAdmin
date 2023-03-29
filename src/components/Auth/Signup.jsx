@@ -116,7 +116,7 @@ const SignUp = () => {
           
     try {
      
-      const datas= await axios.post('https://comradesbizapi.azurewebsites.net/api/user/', 
+      const datas= await axios.post('https://comradesbizapi.azurewebsites.net/api/user/login', 
         values,
        
       );

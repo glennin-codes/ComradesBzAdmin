@@ -50,36 +50,6 @@ const VerifyEmail = async ()=> {
           3000);
          
         }
-        else if(status === 400 ){
-          setVerifying(false);
-          setError(data.error);
-          setTimeOut(()=>{
-           
-            navigate('/auth/signup');
-    
-          },
-          3000);
-        }
-        else{
-          setVerifying(false);
-          setError(data.error);
-          setTimeOut(()=>{
-           
-            navigate('/auth/signup');
-    
-          },
-          3000);
-          
-        }
-      }else{
-        setError('kindly try again later');
-        setVerifying(false);
-        setTimeOut(()=>{
-           
-          navigate('/auth/signup');
-    
-        },
-        3000);
       }
     
     } catch (error) {
