@@ -59,7 +59,7 @@ const config = {
         
         } 
          else if (error.response.status === 401) {
-          setError('You are not authorized to access this resource.');
+          alert('You are not authorized to access this resource.');
         }
          else if (error.response.status === 403) {
           alert('Access to this resource is forbidden. Please log in to continue.');

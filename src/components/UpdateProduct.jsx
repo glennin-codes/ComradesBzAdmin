@@ -9,6 +9,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Stack from '@mui/material/Stack';
 import { Box } from "@mui/system";
 import Alert from "@mui/material/Alert"
+import { useNavigate } from "react-router-dom";
 
 export default function UpdateProductForm({product, onClose,setRefresh,}) {
   const [name, setName] = useState(product.name);
@@ -19,6 +20,7 @@ export default function UpdateProductForm({product, onClose,setRefresh,}) {
   const [open, setOpen] = useState(false);
   const[success,setSuccess]=useState("");
   const[error,setError]=useState("");
+  const navigate=useNavigate();
   console.log(product);
   console.log(product._id)
 
