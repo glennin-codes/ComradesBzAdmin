@@ -7,8 +7,8 @@ const Container = styled(Box)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  width:100vw;
+  height: 100%;
+  width:100%;
   
   background-color: #f7f7f7;
 `;
@@ -23,14 +23,14 @@ const Message = styled(Typography)`
 const LandingPage = ({ name }) => {
   return (
     <Container>
-      <Message variant="h5">
+      <Message variant="h5" align="center">
         Hey, {name}!
       </Message>
       <div >
         <Typography variant="body1" align="center">
           A verification link has been sent to your email.
         </Typography>
-        <Typography variant="body1">
+        <Typography variant="body1" align="center" >
           Kindly visit your email to complete the registration process.
         </Typography>
       </div>
