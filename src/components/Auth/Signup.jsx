@@ -75,13 +75,13 @@ const SignUp = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    console.log('name',values.name)
+ 
     
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         const { name, email, password, confirmPassword,phone } = values;
-        console.log('name after S',name)
+       
         let err;
 
         if (email === '') {
@@ -120,24 +120,28 @@ const SignUp = () => {
         values,
        
       );
-      const { data ,status,} = datas.response;
-
-
-
-       console.log('data' ,data);
+      console.log('data', datas);
+      if  (datas ){
+        const { data ,status,} = datas
+        console.log('data' ,data);
    
-     if(status===201)
-     {
-      const { token } = data;
-      localStorage.setItem('token', token);
-      setValues('');
-       navigate('/verifyCode');
+        if(status === 201)
+        {
+          const {token}=data
 
-     }
-    
-
-      
+         
+         localStorage.setItem('token', token);
+         console.log('token', token);
+         setValues('');
+          navigate('/landingPage');
+          
    
+        }else{
+          setError('Something went wrong, try again later');
+        }
+
+      }
+      setIsLoading(false);
 
     } catch (error) {
       if (error.response && error.response.status) {
