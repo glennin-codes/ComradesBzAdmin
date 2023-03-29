@@ -89,7 +89,7 @@ const VerifyEmail = () => {
         marginTop: "10rem",
       }}
     >
-        {error && <Alert severity="error">{error}</Alert>}
+        {error && <Alert severity="error" >{error}</Alert>}
       {success && <Alert severity="success">{success}</Alert>}
       {verifying ? (
         <>

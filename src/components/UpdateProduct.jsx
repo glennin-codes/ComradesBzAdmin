@@ -18,6 +18,7 @@ export default function UpdateProductForm({product, onClose,setRefresh,}) {
   const [stock, setStock] = useState(product.stock);
   const [open, setOpen] = useState(false);
   const[success,setSuccess]=useState("");
+  const[error,setError]=useState("");
   console.log(product);
   console.log(product._id)
 
@@ -25,13 +26,19 @@ export default function UpdateProductForm({product, onClose,setRefresh,}) {
 
     event.preventDefault();
     try {
-    const res = await axios.patch(`https://shopifybackend.onrender.com/api/product/${product._id}`, {
+      const token =localStorage.getItem('token'); // Get token from local storage
+      const config = {
+        headers: { Authorization: `Bearer ${token}` }
+      };
+    const res = await axios.patch(`https://comradesbizapi.azurewebsites.net/api/product/${product._id}`, {
         name,
         category,
         company,
         price,
         stock,
-      });
+      },
+      config
+      );
       if (res.status === 200) {
         setSuccess("Product updated successfully");
            setRefresh(prevState => !prevState)
@@ -41,8 +48,28 @@ export default function UpdateProductForm({product, onClose,setRefresh,}) {
       }
      
     } catch (error) {
-     
-      alert("There was an error");
+      if (error.response && error.response.status === 404) {
+        setError("Product not found");
+      
+      } 
+       else if (error.response.status === 401) {
+        setError('You are not authorized to access this resource.');
+      }
+       else if (error.response.status === 403) {
+        setError('Access to this resource is forbidden. Please log in to continue.');
+        setTimeout(()=>{
+          navigate('/');
+        }
+        ,3000
+        )
+      }else if (error.response.status === 500){
+          console.log(error.response.data);
+         setError("Server error!");
+      }
+      else {
+        setError("network error!,check your connections and try again");
+       
+      }
       setOpen(false);
     }
   };
@@ -50,6 +77,7 @@ export default function UpdateProductForm({product, onClose,setRefresh,}) {
   return (
     <div>
         {success && <Alert severity='success'>{success}</Alert>}
+        {error && <Alert severity='error'>{error}</Alert>}
       <Button onClick={() => setOpen(true)}>Update Product</Button>
     
       <Box maxWidth="sm" sx={{ my: 4, mx: "auto" }}>

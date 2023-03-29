@@ -13,7 +13,7 @@ import Button from "@mui/material/Button"
 import Alert from "@mui/material/Alert"
 import UpdateProductForm from './UpdateProduct';
 import { Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom';
 
 export default function Manageproducts() {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const navigate=useNavigate();
 
 console.log(selectedProduct);
     const [products,setProducts]=useState([])
@@ -29,7 +30,7 @@ console.log(selectedProduct);
     const [refresh, setRefresh] = useState(false);
     useEffect(()=>{
 const fetchproducts= async ()=>{
-const {data}=await axios.get("https://shopifybackend.onrender.com/api/products/all")
+const {data}=await axios.get("https://comradesbizapi.azurewebsites.net/api/products/all")
 setProducts(data)
 }
 fetchproducts()
@@ -38,7 +39,14 @@ fetchproducts()
       try {
         setSuccess("");
         alert(`Are you sure you want to delete product with ${_id} id? This action is irreversible!`);
-        const res = await axios.delete(`https://shopifybackend.onrender.com/api/product/${_id}`);
+        const token =localStorage.getItem('token'); // Get token from local storage
+const config = {
+  headers: { Authorization: `Bearer ${token}` }
+};
+
+        const res = await axios.delete(`https://comradesbizapi.azurewebsites.net/api/product/${_id}`,
+          config
+        );
         if (res.status === 200) {
           setSuccess("Product deleted successfully");
           setRefresh(prevState => !prevState);
@@ -49,8 +57,23 @@ fetchproducts()
         if (error.response && error.response.status === 404) {
           alert("Product not found");
         
-        } else {
-          alert("There was an error");
+        } 
+         else if (error.response.status === 401) {
+          setError('You are not authorized to access this resource.');
+        }
+         else if (error.response.status === 403) {
+          alert('Access to this resource is forbidden. Please log in to continue.');
+          setTimeout(()=>{
+            navigate('/');
+          }
+          ,3000
+          )
+        }else if (error.response.status === 500){
+            console.log(error.response.data);
+            alert("Server error!");
+        }
+        else {
+          alert("network error!,check your network and try again");
          
         }
       }
