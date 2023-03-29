@@ -9,14 +9,17 @@ margin: 0 auto;
 border-color: red; `;
    
 
-function VerifyEmail() {
+function VerifyEmail async () {
   const navigate= useNavigate();
   const location = useLocation();
   const [verifying, setVerifying] = useState(true);
+  const[succes,setSucces]=useState('');
+  const[error,setError]=useState('');
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const code = searchParams.get('code');
+    const email = searchParams.get('email');
 
     if (!code) {
      navigate('/');
@@ -25,25 +28,98 @@ function VerifyEmail() {
 
     // Call an API to check if the verification code is valid and mark the user's email as verified
     // This could be done using axios or fetch
-
-    axios.post('/api/verifyCode', { code })
-      .then((response) => {
-        setVerifying(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        history.push('/');
-      });
-
-    // For this example, we'll just simulate the API call with a timeout
-    setTimeout(() => {
+try {
+  const response=await axios.post('https://comradesbizapi.azurewebsites.net/api/verifyCode', { code,email })
+  if( response ){
+    console.log(response.data);
+    const{data,status}=response
+    if(status===200){
       setVerifying(false);
-    }, 5000);
-  }, [history, location.search]);
+      setSucces(data.message);
+
+      setTimeOut(()=>{
+      
+        navigate('/admin');
+
+      },
+      3000);
+     
+    }
+    else if(status === 400 ){
+      setVerifying(false);
+      setError(data.error);
+      setTimeOut(()=>{
+       
+        navigate('/auth/signup');
+
+      },
+      3000);
+    }
+    else{
+      setVerifying(false);
+      setError(data.error);
+      setTimeOut(()=>{
+       
+        navigate('/auth/signup');
+
+      },
+      3000);
+      
+    }
+  }else{
+    setError('kindly try again later');
+    setVerifying(false);
+    setTimeOut(()=>{
+       
+      navigate('/auth/signup');
+
+    },
+    3000);
+  }
+
+} catch (error) {
+ if(error && error.response){
+    const{data,status}=error.response;
+    if(status === 400){
+      setVerifying(false);
+      setError(data.error,'kindly register');
+      setTimeOut(()=>{
+       
+        navigate('/auth/signup');
+
+      },
+      3000);
+
+     
+    }
+    else if(status === 500){
+      setVerifying(false);
+      setError(data.error,'kindly try again later');
+      setTimeOut(()=>{
+        navigate('/auth/signup');
+      },
+      3000);
+
+    }else{
+      setVerifying(false);
+      setError('network error check your connection and try again later');
+      setTimeOut(()=>{
+       
+        navigate('/auth/signup');
+
+      },
+      3000);
+    }
+ }
+  
+}
+    
+    
+  }, [location.search]);
 
   const handleRedirect = () => {
     if (!verifying) {
-      navigate('/');
+      navigate('/admin');
     }
   };
 
