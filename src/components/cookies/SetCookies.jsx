@@ -1,24 +1,44 @@
 import Cookies from 'js-cookie';
 
-export const setAuthCookie = (name, email, _id, token) => {
+const setAuthCookie = (name, email, id, token) => {
+  try {
     Cookies.set('authData', {
       name: name,
       email: email,
-      id: _id,
+      id: id,
       token: token
     }, {
-      expires: 7, // set the cookie to expire in 7 days
-      secure: true, // set the cookie to only be transmitted over HTTPS
-      httpOnly: true, // set the cookie to be inaccessible from client-side JavaScript
-      sameSite: 'strict' // set the cookie to only be sent on same-site requests
+    
+      expires: 7, //set the cookie to expire in 7 days
+    secure: true, // set the cookie to only be transmitted over HTTPS
+    httpOnly: true, // set the cookie to be inaccessible from client-side JavaScript
+    sameSite: 'none' // set the cookie to be sent on same-site and cross-site requests
     });
-}
-// To get the auth data from the cookie
-export const getAuthData = () => {
-    const authData = Cookies.getJSON('authData');
-    return authData ? authData : null;
+    
+    console.log('Auth cookie set');
+  } catch (error) {
+    console.log('Error setting auth cookie:', error);
   }
-// To remove the auth data from the cookie
-export const removeAuthCookie = () => {
+};
+
+const getAuthData = () => {
+  try {
+    console.log('Auth data:', authData);
+    const authData = Cookies.get('authData');
+    
+  } catch (error) {
+    console.log('Error getting auth data:', error);
+   
+  }
+};
+
+const removeAuthCookie = () => {
+  try {
     Cookies.remove('authData');
+    console.log('Auth cookie removed');
+  } catch (error) {
+    console.log('Error removing auth cookie:', error);
   }
+};
+
+export { setAuthCookie, getAuthData, removeAuthCookie };

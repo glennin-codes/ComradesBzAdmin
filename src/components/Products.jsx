@@ -34,10 +34,11 @@ const [values, setValues] = useState({});
 const [images, setImages] = useState([]);
  const [status, setStatus] = React.useState("");
   const [error, setError] = React.useState(""); 
-const [uploading, setIsUpLoading] = useState(null);
+const [uploading, setIsUpLoading] = useState("");
 const [isSubmit,setIsSubmit]=useState(false);
 const [selected,setIsSelected]=useState(0);
 const {user}=useContext(AuthContext);
+const{name,setName}=useState("");
 
 
 const time = 1* 60 * 1000;//waiting time to upload
@@ -130,15 +131,16 @@ console.log(images)
     event.preventDefault();
     setIsSubmit(true);
     setIsUpLoading("Uploading to database.. wait for about a minute please");
- const {email}= getAuthData()
+    
+    const {token,name,email}=getAuthData();
     const newProductInfo = { ...values,images,user:email};
-    const {token}=getAuthData();
-     
-    // Get token from local storage
+    setName(name);
+    
+    
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-
+   
     axios.post("https://comradesbizapi.azurewebsites.net/api/addProduct",newProductInfo,
     config
     )
@@ -179,7 +181,7 @@ console.log(images)
          
         }
           
-        setIsUpLoading(null);
+        setIsUpLoading("");
       });
       
   };

@@ -130,9 +130,10 @@ const SignUp = () => {
    
         if(status === 201)
         {
-          const {token,name,email,_id}=data;
+          const {token,name,email,id}=data;
           //setting cookies
-          setAuthCookie(token,name,email,_id);
+          
+          setAuthCookie(token,name,email,id);
    
          setValues('');
          navigate(`/landingPage?name=${encodeURIComponent(name)}`); // Pass name as URL parameter
