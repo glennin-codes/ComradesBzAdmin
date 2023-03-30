@@ -27,6 +27,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import Typewriter from 'typewriter-effect';
 import { getAuthData } from "./cookies/SetCookies";
+
 export default function Products() {
 {/*states*/}
 const [values, setValues] = useState({});
@@ -37,9 +38,6 @@ const [uploading, setIsUpLoading] = useState(null);
 const [isSubmit,setIsSubmit]=useState(false);
 const [selected,setIsSelected]=useState(0);
 const {user}=useContext(AuthContext);
-
-localStorage.setItem('name',(user ? user.name : '') );
-localStorage.setItem('email',(user ? user.email : '') );
 
 
 const time = 1* 60 * 1000;//waiting time to upload
@@ -132,7 +130,7 @@ console.log(images)
     event.preventDefault();
     setIsSubmit(true);
     setIsUpLoading("Uploading to database.. wait for about a minute please");
- const {email}= getAuthData();
+ const {email}= getAuthData()
     const newProductInfo = { ...values,images,user:email};
     const {token}=getAuthData();
      

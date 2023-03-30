@@ -25,7 +25,7 @@ const UserProfile = () => {
   const [phone, setPhone] = useState('');
   const [location, setLocation] = useState('');
   const [school, setSchool] = useState('');
-  const{_id,token}=getAuthData();
+  const{id,token}=getAuthData();
   const config={
    
         headers: { Authorization: `Bearer ${token}` },
@@ -35,7 +35,7 @@ const UserProfile = () => {
   useEffect(() => {
     // Fetch user data from API
     
-    axios.get(`https://comradesbizapi.azurewebsites.net/api/user/${_id}`)
+    axios.get(`https://comradesbizapi.azurewebsites.net/api/user/${id}`)
       .then(response => {
         setUser(response.data);
         setName(response.data.name);

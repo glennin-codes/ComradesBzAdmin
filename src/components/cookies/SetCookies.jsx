@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const setAuthCookie = (name, email, _id, token) => {
+export const setAuthCookie = (name, email, _id, token) => {
     Cookies.set('authData', {
       name: name,
       email: email,
@@ -14,11 +14,11 @@ const setAuthCookie = (name, email, _id, token) => {
     });
 }
 // To get the auth data from the cookie
-const getAuthData = () => {
+export const getAuthData = () => {
     const authData = Cookies.getJSON('authData');
     return authData ? authData : null;
   }
-export  { 
-    setAuthCookie,
-    getAuthData
-}
+// To remove the auth data from the cookie
+export const removeAuthCookie = () => {
+    Cookies.remove('authData');
+  }
