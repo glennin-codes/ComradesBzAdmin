@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import ClipLoader from "react-spinners/ClipLoader";
 import { css } from '@emotion/react';
+import { Alert } from '@mui/material';
 
 const Container = styled.div`
   display: flex;
@@ -60,77 +61,83 @@ const UserProfile = () => {
   useEffect(() => {
     setLoading(true);
     // Fetch user data from API
-    axios.get(`https://comradesbizapi.azurewebsites.net/api/user/${id}`)
-      .then(response => {
+   const fetchData=async ()=>{
+    try{
+     const response= await axios.get(`https://comradesbizapi.azurewebsites.net/api/user/${id}`)
+      if (response){
+        const {name,phone,location,school}=await  response.data;
         setUser(response.data);
-        setName(response.data.name);
-        setEmail(response.data.email);
-        setPhone(response.data.phone);
-        setLocation(response.data.location);
-        setSchool(response.data.school);
-      })
-      .catch(error => {
+        setName(name);
+        setPhone(phone);
+        setLocation(location);
+          setSchool(school);
+          setError('');
+      }
+      
+    }
+    catch(error) {
         setLoading(false)
         console.error(error);
-        // if (error.response && error.response.status === 404) {
-        //   setError("User not found");
+        if(error){
+        if (error.response && error.response.status === 404) {
+          setError("User not found");
         
-        // } 
-        //  else if (error.response.status === 401) {
-        //   setError('You are not authorized to access this resource.');
-        // }
-        //  else if (error.response.status === 403) {
-        //   setError('Access to this resource is forbidden. Please log in to continue.');
-        //   setTimeout(()=>{
-        //     navigate('/');
-        //   }
-        //   ,3000
-        //   )
-        // }else if (error.response.status === 500){
-        //     console.log(error.response.data);
-        //    setError("Server error!");
-        // }
-        // else {
-        //   setError("network error!,check your connections and try again");
+        } 
+        else if ( error.response && error.response.status === 500){
+            console.log(error.response.data);
+           setError("Server error!");
+        }
+        else {
+          setError("network error!,check your connections and try again");
          
-        // }
+        }
 
-        
-      });
+      }
+      };
+    }
+    fetchData();
   }, []);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
+    try{
     // PUT updated user data to API
-    axios.put(`https://comradesbizapi.azurewebsites.net/api/user/${id}`, {
+    const response= await axios.put(`https://comradesbizapi.azurewebsites.net/api/user/${id}`, {
       name,
-      email,
       phone,
       location,
       school
     } ,
     config
     )
-      .then(response => {
+      if(response){
         setUser(response.data);
         setName(response.data.name);
-        setEmail(response.data.email);
         setPhone(response.data.phone);
         setLocation(response.data.location);
         setSchool(response.data.school);
-      })
-      .catch(error => console.error(error));
+      }
+    }  catch(error){
+      console.error(error);
+      
+
+    }
+
+        
   };
 
   return (
     <Container>
         {error && <Alert severity="error" >{error}</Alert>}
       {loading ?(
+        <>
          <ClipLoader
          color={"#36D7B7"}
          loading={loading}
          css={override}
          size={150}
        />
+       <Heading>fetching user profile ,please wait ....</Heading>
+       </>
 
       ):
       user &&
