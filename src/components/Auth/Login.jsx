@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText, CircularProgress } from '@mui/material';
 import "./Login.css";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
@@ -7,20 +7,15 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
 import { useState } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
+import setAuthCookie from '../cookies/SetCookies';
 // import useAuthContext from '../../../others/useAuthContext';
 // import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 
 
 const Login = () => {
-
+const {setUser }=useContext(AuthContext)
     const navigate =useNavigate();
-    // const { loginEmail, authError, setAuthError, authLoading } = useAuthContext();
-
-    // useEffect(() => setAuthError(null), [setAuthError])
-    // useEffect(() => {
-    //     // authError && 
-    //     setValues({ email: '', password: '', showPassword: '' })
-    // }, [])
 const[error,setError]=useState(null);
 const[succes,setSucces]=useState(null);
 const[loading,setIsLoading]=useState(false);
@@ -85,12 +80,15 @@ const[loading,setIsLoading]=useState(false);
         if( response ){
             console.log(response.data);
             const{data,status}=response
+            setUser(data);
             setIsLoading(false);
             if(status===200){
-                const {token}=data
-                localStorage.setItem('token', token);
-                console.log('token', token);
-                setValues('');
+                const {token,name,email,_id}=data;
+               //setting up cookie
+
+                setAuthCookie(token,name,email,_id);
+                
+           setValues('');
               setSucces("logged in succesfull");
               navigate('/admin');
         

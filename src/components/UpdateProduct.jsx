@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack';
 import { Box } from "@mui/system";
 import Alert from "@mui/material/Alert"
 import { useNavigate } from "react-router-dom";
+import { getAuthData } from "./cookies/SetCookies";
 
 export default function UpdateProductForm({product, onClose,setRefresh}) {
   const [name, setName] = useState(product.name);
@@ -28,7 +29,7 @@ export default function UpdateProductForm({product, onClose,setRefresh}) {
 
     event.preventDefault();
     try {
-      const token =localStorage.getItem('token'); // Get token from local storage
+      const {token} =getAuthData(); // Get token from local storage
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };

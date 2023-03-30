@@ -13,7 +13,7 @@ import {
   Paper,
 } from "@mui/material";
 
-import React from "react";
+import React, { useContext } from "react";
 import {useCallback,useEffect,useState} from 'react'
 import { useDropzone } from "react-dropzone";
 import Toast from "../assets/utils/Toast";
@@ -24,16 +24,23 @@ import "../style/product.css"
 import ImgComponent from "./ImgComponent";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { AuthContext } from "./context/AuthContext";
+import Typewriter from 'typewriter-effect';
+import { getAuthData } from "./cookies/SetCookies";
 export default function Products() {
 {/*states*/}
 const [values, setValues] = useState({});
 const [images, setImages] = useState([]);
  const [status, setStatus] = React.useState("");
-  const [failed, setFailed] = React.useState("");
   const [error, setError] = React.useState(""); 
-const [uploading, setIsUpLoading] = useState();
+const [uploading, setIsUpLoading] = useState(null);
 const [isSubmit,setIsSubmit]=useState(false);
 const [selected,setIsSelected]=useState(0);
+const {user}=useContext(AuthContext);
+
+localStorage.setItem('name',(user ? user.name : '') );
+localStorage.setItem('email',(user ? user.email : '') );
+
 
 const time = 1* 60 * 1000;//waiting time to upload
 useEffect(()=>{
@@ -42,7 +49,7 @@ useEffect(()=>{
   }
   if (uploading) {
     toast.loading(uploading);
-    setIsUpLoading();
+    setIsUpLoading(null);
   }
   
   if (status) {
@@ -125,10 +132,18 @@ console.log(images)
     event.preventDefault();
     setIsSubmit(true);
     setIsUpLoading("Uploading to database.. wait for about a minute please");
- 
-    const newProductInfo = { ...values,images};
- 
-    axios.post("https://comradesbizapi.azurewebsites.net/api/addProduct",newProductInfo)
+ const {email}= getAuthData();
+    const newProductInfo = { ...values,images,user:email};
+    const {token}=getAuthData();
+     
+    // Get token from local storage
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    axios.post("https://comradesbizapi.azurewebsites.net/api/addProduct",newProductInfo,
+    config
+    )
       .then(({ data }) => {
         
         if (data.code === 1) {
@@ -139,22 +154,55 @@ console.log(images)
         setIsSubmit(false);
           event.target.reset();
         }
+        setError('')
       //  throw new Error('Failed to upload to Cloudinary');
       })
-      .catch((err) => {
-        setError(`product not added, there was an error`);
-      
-       
+      .catch((error) => {
+        if (error.response && error.response.status === 404) {
+          setError("Product not found");
         
+        } 
+         else if (error.response.status === 401) {
+          setError('You are not authorized to access this resource.');
+        }
+         else if (error.response.status === 403) {
+          setError('Access to this resource is forbidden. Please log in to continue.');
+          setTimeout(()=>{
+            navigate('/');
+          }
+          ,3000
+          )
+        }else if (error.response.status === 500){
+            console.log(error.response.data);
+           setError("Server error!");
+        }
+        else {
+          setError("network error!,check your connections and try again");
+         
+        }
+          
+        setIsUpLoading(null);
       });
       
   };
   return (
     <Box>
       <Toast time={time}/>
-      <Typography variant="h4" align="center" color="primary" fontWeight="bold">
-        Add New product In Shop
-      </Typography>
+      
+        <Typography variant="h4" color="primary" sx={{textAlign:'center'}}fontWeight="bold" >
+                    <Typewriter
+                        options={{ loop: true }}
+                        onInit={(typewriter) => {
+                            typewriter.typeString( `Welcome ${name}` )
+                                .pauseFor(2500).deleteAll()
+                                .typeString('Add A New Product In Shop').pauseFor(2500)
+                                .deleteAll()
+                                .typeString('It will take just few minutes')
+                                .pauseFor(2500)
+                                .start();
+                        }}
+                    />
+                </Typography>
 
       <Box maxWidth="sm" sx={{ my: 4, mx: "auto" }}>
         {/* product information form */}

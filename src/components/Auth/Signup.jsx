@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Typography, FormControl, InputLabel, InputAdornment, IconButton, Input, Button, FormHelperText, ListSubheader, TextField, OutlinedInput, Select, Grid, Checkbox, MenuItem, CircularProgress } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box } from '@mui/system';
@@ -10,10 +10,12 @@ import { useNavigate } from 'react-router-dom';
 
 import {useRef} from "react"
 import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
+import { setAuthCookie } from '../cookies/SetCookies';
 const SignUp = () => {
    
     const navigate =useNavigate();
-  
+  const{setUser}=useContext(AuthContext)
     const[search,setSearch]=React.useState('');
    
     const[locationText,setLocationText]=React.useState('');
@@ -123,15 +125,15 @@ const SignUp = () => {
       console.log('data', datas);
       if  (datas ){
         const { data ,status,} = datas
+        setUser(data);
         console.log('data' ,data);
    
         if(status === 201)
         {
-          const {token}=data
-
-         
-         localStorage.setItem('token', token);
-         console.log('token', token);
+          const {token,name,email,_id}=data;
+          //setting cookies
+          setAuthCookie(token,name,email,_id);
+   
          setValues('');
          navigate(`/landingPage?name=${encodeURIComponent(name)}`); // Pass name as URL parameter
           

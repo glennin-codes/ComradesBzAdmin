@@ -14,6 +14,7 @@ import Alert from "@mui/material/Alert";
 import UpdateProductForm from "./UpdateProduct";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { getAuthData } from "./cookies/SetCookies";
 
 export default function Manageproducts() {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -42,7 +43,7 @@ export default function Manageproducts() {
       alert(
         `Are you sure you want to delete product with ${_id} id? This action is irreversible!`
       );
-      const token = localStorage.getItem("token"); // Get token from local storage
+      const {token} = getAuthData(); // Get token from local storage
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
