@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import ClipLoader from "react-spinners/ClipLoader";
 import { css } from '@emotion/react';
-import { Alert } from '@mui/material';
+import { Alert, CircularProgress } from '@mui/material';
 
 const Container = styled.div`
   display: flex;
@@ -43,12 +43,13 @@ const UserProfileButton = styled(Button)`
 const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [location, setLocation] = useState('');
   const [school, setSchool] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
  
   const token=localStorage.getItem('token')
   const config={
@@ -99,6 +100,7 @@ const UserProfile = () => {
   }, []);
 
   const handleUpdate = async () => {
+    setSending(true);
     try{
     // PUT updated user data to API
     const response= await axios.put(`https://comradesbizapi.azurewebsites.net/api/user/${id}`, {
@@ -110,6 +112,8 @@ const UserProfile = () => {
     config
     )
       if(response){
+        setSending(false);
+        setSuccess('update was a success!');
         setUser(response.data);
         setName(response.data.name);
         setPhone(response.data.phone);
@@ -118,7 +122,29 @@ const UserProfile = () => {
       }
     }  catch(error){
       console.error(error);
+      setSending(false);
+      if (error.response && error.response.status === 404) {
+        setError("User not found");
       
+      } 
+       else if (error.response && error.response.status === 401) {
+        setError('You are not authorized to access this resource.');
+      }
+       else if (error.response &&  error.response.status === 403) {
+        setError('Access to this resource is forbidden. Please log in to continue.');
+        setTimeout(()=>{
+          navigate('/');
+        }
+        ,3000
+        )
+      }else if (error.response && error.response.status === 500){
+          console.log(error.response.data);
+         setError("Server error!");
+      }
+      else {
+        setError("network error!,check your connections and try again");
+       
+      }
 
     }
 
@@ -128,6 +154,7 @@ const UserProfile = () => {
   return (
     <Container>
         {error && <Alert severity="error" >{error}</Alert>}
+  
       {loading ?(
         <>
          <ClipLoader
@@ -152,11 +179,11 @@ const UserProfile = () => {
             />
           </InputContainer>
           <InputContainer>
-            <TextField
+            {/* <TextField
               label="Email"
               value={email}
               onChange={event => setEmail(event.target.value)}
-            />
+            /> */}
           </InputContainer>
           <InputContainer>
             <TextField
@@ -179,7 +206,14 @@ const UserProfile = () => {
               onChange={event => setSchool(event.target.value)}
             />
           </InputContainer>
-          <UserProfileButton variant="contained" onClick={handleUpdate}>Update</UserProfileButton>
+          <Button variant="contained" size="large" color="primary" onclick={handleUpdate}
+                        sx={{ width: '100%', mt: 1.5, mb: 4 }}
+                        disabled={sending}
+                        >
+                        {sending?<CircularProgress size={24} />: 'Update'}
+                    </Button>
+                    {success && <Alert severity="success" position="right" >{success}</Alert>}
+
         </>
       )
 }

@@ -56,17 +56,17 @@ export default function UpdateProductForm({product, onClose,setRefresh}) {
         setError("Product not found");
       
       } 
-       else if (error.response.status === 401) {
+       else if ( error.response && error.response.status === 401) {
         setError('You are not authorized to access this resource.');
       }
-       else if (error.response.status === 403) {
+       else if (error.response && error.response.status === 403) {
         setError('Access to this resource is forbidden. Please log in to continue.');
         setTimeout(()=>{
           navigate('/');
         }
         ,3000
         )
-      }else if (error.response.status === 500){
+      }else if (error.response && error.response.status === 500){
           console.log(error.response.data);
          setError("Server error!");
       }
