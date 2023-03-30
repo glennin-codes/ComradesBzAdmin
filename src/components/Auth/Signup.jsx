@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import {useRef} from "react"
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { setAuthCookie } from '../cookies/SetCookies';
 const SignUp = () => {
    
     const navigate =useNavigate();
@@ -132,8 +131,10 @@ const SignUp = () => {
         {
           const {token,name,email,id}=data;
           //setting cookies
-          
-          setAuthCookie(token,name,email,id);
+          localStorage.setItem('name',name);
+          localStorage.setItem('email',email);
+          localStorage.setItem('id',id);
+          localStorage.setItem('token',token);
    
          setValues('');
          navigate(`/landingPage?name=${encodeURIComponent(name)}`); // Pass name as URL parameter

@@ -8,7 +8,10 @@ import Typewriter from 'typewriter-effect';
 import { useState } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import {setAuthCookie} from '../cookies/SetCookies';
+import { Cookies } from 'react-cookie';
+
+const cookies = new Cookies();
+
 // import useAuthContext from '../../../others/useAuthContext';
 // import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 
@@ -84,9 +87,15 @@ const[loading,setIsLoading]=useState(false);
             setIsLoading(false);
             if(status===200){
                 const {token,name,email,id}=data;
+                 localStorage.setItem('name',name);
+                 localStorage.setItem('token',token);
+                    localStorage.setItem('email',email);
+                    localStorage.setItem('id',id);
                //setting up cookie
+               console.log('name',name)
+               
 console.log(id);
-                setAuthCookie(token,name,email,id);
+              
                 
            setValues('');
               setSucces("logged in succesfull");
