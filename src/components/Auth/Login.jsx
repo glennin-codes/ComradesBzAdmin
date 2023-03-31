@@ -7,17 +7,15 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
 import { useState } from 'react';
 import axios from 'axios';
-import { AuthContext } from '../context/AuthContext';
-import { Cookies } from 'react-cookie';
+// import { AuthContext } from '../context/AuthContext';
 
-const cookies = new Cookies();
 
 // import useAuthContext from '../../../others/useAuthContext';
 // import LoadingSpinner from '../../Common/LoadingSpinner/LoadingSpinner';
 
 
 const Login = () => {
-const {setUser }=useContext(AuthContext)
+// const {setUser }=useContext(AuthContext)
     const navigate =useNavigate();
 const[error,setError]=useState(null);
 const[succes,setSucces]=useState(null);
