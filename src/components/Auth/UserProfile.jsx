@@ -5,7 +5,8 @@ import Button from '@mui/material/Button';
 import styled from '@emotion/styled';
 import ClipLoader from "react-spinners/ClipLoader";
 import { css } from '@emotion/react';
-import { Alert, CircularProgress } from '@mui/material';
+import { Alert, CircularProgress, Grid, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -89,7 +90,7 @@ const UserProfile = () => {
            setError("Server error!");
         }
         else {
-          setError("network error!,check your connections and try again");
+          setError("network error while trying to fetch!,check your connections and try again");
          
         }
 
@@ -101,6 +102,9 @@ const UserProfile = () => {
 
   const handleUpdate = async () => {
     setSending(true);
+    if (!(/^\+(?:[0-9] ?){6,14}[0-9]$/).test(phone)) {
+      setError("Your mobile number should have valid  include a country code! ..ie +2547123456789");
+    } 
     try{
     // PUT updated user data to API
     const response= await axios.put(`https://comradesbizapi.azurewebsites.net/api/user/${id}`, {
@@ -206,12 +210,22 @@ const UserProfile = () => {
               onChange={event => setSchool(event.target.value)}
             />
           </InputContainer>
-          <Button variant="contained" size="large" color="primary" onclick={handleUpdate}
+          <Grid item xs={12} sx={{ textAlign: "right" }}>
+          <Button position="right" variant="contained" size="large" color="primary" onClick={handleUpdate}
                         sx={{ width: '100%', mt: 1.5, mb: 4 }}
                         disabled={sending}
                         >
                         {sending?<CircularProgress size={24} />: 'Update'}
                     </Button>
+                    </Grid>
+                    <Grid item xs={12} sx={{ textAlign: "right" }}>
+              <Typography component={Link} to="/manage">
+                Manage All Products
+              </Typography>
+              <Typography component={Link} to="/admin">
+               upload new Product
+              </Typography>
+            </Grid>
                     {success && <Alert severity="success" position="right" >{success}</Alert>}
 
         </>

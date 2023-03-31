@@ -1,5 +1,4 @@
-import React, { forwardRef, useRef } from "react";
-// import {useSpring, animated } from "react-spring";
+import React from "react";
 import {
   Button,
   Alert,
@@ -15,23 +14,11 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import usePrevious from "../assets/hooks/usePrevious";
-export default function ImgComponent({ images, handleColorChange, deleteImage }) {
-  // // const prevImages =usePrevious(images);
-  // const refs = useRef(images.map(() => React.createRef()));
-
-  // const ImageTransition = forwardRef((props, ref) => {
-  //   const spring = useSpring({
-  //     to: { opacity: 1 },
-  //     from: { opacity: 0 },
-  //     reset: true,
-  //     config: { duration: 500 },
-  //   });
-
-    // return (
-    //   <animated.div ref={ref} style={spring} {...props} />
-    // );
- 
+export default function ImgComponent({
+  images,
+  handleColorChange,
+  deleteImage,
+}) {
   return (
     <>
       <Grid item xs={12}>
@@ -48,16 +35,6 @@ export default function ImgComponent({ images, handleColorChange, deleteImage })
                 alt={`Image ${index + 1}`}
                 width="100"
                 height="100"
-                // style={{
-                //   opacity:
-                //     prevImages &&
-                //     prevImages[index] &&
-                //     prevImages[index].data === image.data
-                //       ? 1
-                //       : 1,
-                //   marginRight: "8px",
-                // }}
-                
               />
             </div>
             {/* color input */}
@@ -75,32 +52,16 @@ export default function ImgComponent({ images, handleColorChange, deleteImage })
                 <MenuItem value="yellow">Yellow</MenuItem>
               </Select>
             </FormControl>
-            <IconButton   onClick={() => deleteImage(index)}>
-              {/* <ImageTransition
-                key={index}
-                timeout={500}
-              > */}
-                {/* <animated.div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginLeft: "8px",
-                    opacity: 1,
-                    from: { opacity: 1 },
-                  }}
-                > */}
-                  <DeleteIcon
-                    sx={{
-                      color: "rgb(255, 0, 0)",
-                      "&:hover": {
-                        color: "rgb(200, 0, 0)",
-                        cursor: "pointer",
-                      },
-                    }}
-                  
-                  />
-                {/* </animated.div> */}
-              {/* </ImageTransition> */}
+            <IconButton onClick={() => deleteImage(index)}>
+              <DeleteIcon
+                sx={{
+                  color: "rgb(255, 0, 0)",
+                  "&:hover": {
+                    color: "rgb(200, 0, 0)",
+                    cursor: "pointer",
+                  },
+                }}
+              />
             </IconButton>
           </Box>
         ))}

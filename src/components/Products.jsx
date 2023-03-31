@@ -417,6 +417,11 @@ export default function Products() {
                 Manage All Products
               </Typography>
             </Grid>
+            <Grid item xs={12} sx={{ textAlign: "right" }}>
+              <Typography component={Link} to="/userProfile">
+                Profile Acount
+              </Typography>
+            </Grid>
           </Grid>
         </form>
       </Box>

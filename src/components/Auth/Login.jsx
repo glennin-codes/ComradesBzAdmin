@@ -189,9 +189,7 @@ console.log(id);
                         <Typography sx={{ ml: 4 }}>Forgot Password</Typography>
                     </Box>
 
-                    {/* <Box sx={{ height: '30px' }}>
-                        {authLoading && <LoadingSpinner width="30px" height="30px" />}
-                    </Box> */}
+                  
                     <Button variant="contained" size="large" color="primary" type="submit"
                         sx={{ width: '100%', mt: 1.5, mb: 4 }}
                         disabled={loading}
