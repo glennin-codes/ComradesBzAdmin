@@ -19,7 +19,6 @@ import { useDropzone } from "react-dropzone";
 import Toast from "../assets/utils/Toast";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { CSSTransition } from "react-transition-group";
 import "../style/product.css";
 import ImgComponent from "./ImgComponent";
 import axios from "axios";
