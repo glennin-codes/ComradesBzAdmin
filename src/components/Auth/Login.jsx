@@ -81,7 +81,7 @@ const[loading,setIsLoading]=useState(false);
         if( response ){
             console.log(response.data);
             const{data,status}=response
-            setUser(data);
+           ;
             setIsLoading(false);
             if(status===200){
                 const {token,name,email,id}=data;
