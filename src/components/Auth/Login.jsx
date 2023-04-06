@@ -124,9 +124,6 @@ console.log(id);
               setError('Timeout,something went wrong');
               
             }
-        }else{
-            setError('network error check your connection and try again later')
-            
         }
         setIsLoading(false);
     }
