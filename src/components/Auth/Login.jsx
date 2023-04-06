@@ -105,6 +105,7 @@ console.log(id);
         }
         
         }catch (error) {
+        console.error(error);
          if(error && error.response){
             const{data,status}=error.response;
             if(status === 401){
