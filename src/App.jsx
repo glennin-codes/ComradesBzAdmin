@@ -10,6 +10,7 @@ import VerifyEmail from "./components/Verification";
 import LandingPage from "./components/Auth/landingPage";
 import UserProfile from "./components/Auth/UserProfile";
 import { AuthProvider } from "./components/context/AuthContext";
+import TermsOfServices from "./components/Terms/TermsOfServices";
 
 function App() {
  
@@ -26,6 +27,7 @@ function App() {
       <Route path="/verifycode" element={<VerifyEmail />} />
       <Route path="/landingPage" element={<LandingPage />} />
       <Route path="/userprofile" element={<UserProfile />} />
+      <Route path="/terms" element={< TermsOfServices />} />
 
     </Routes>
      
