@@ -13,10 +13,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function UpdateProductForm({product, onClose,setRefresh}) {
   const [name, setName] = useState(product.name);
-  const [category, setCategory] = useState(product.category);
-  const [company, setCompany] = useState(product.company);
-  const [price, setPrice] = useState(product.price);
-  const [stock, setStock] = useState(product.stock);
+  const [location, setLocation] = useState(product.location);
+  const [school, setSchool] = useState(product.school);
+  const [email, setEmail] = useState(product.email);
+  const [phone, setPhone] = useState(product.phone);
   const [open, setOpen] = useState(false);
   const[success,setSuccess]=useState("");
   const[error,setError]=useState("");
@@ -34,12 +34,14 @@ export default function UpdateProductForm({product, onClose,setRefresh}) {
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };
-    const res = await axios.patch(`https://comradesbizapi.azurewebsites.net/api/product/${product._id}`, {
+    const res = await axios.put(`https://comradesbizapi.azurewebsites.net/api/user/${product._id}`, {
         name,
-        category,
-        company,
-        price,
-        stock,
+        email,
+        location,
+        isVerified,
+        createdAt,
+        school,
+        phone
       },
       config
       );
@@ -97,24 +99,24 @@ export default function UpdateProductForm({product, onClose,setRefresh}) {
               </Grid>
               <Grid  item xs={6} md={4}>
               <Box sx={{ display: "flex", alignitems: "flex-end" }}>
-              <TextField label="Category" fullWidth variant='standard' value={category} onChange={(event) => setCategory(event.target.value)} />
+              <TextField label="location" fullWidth variant='standard' value={location} onChange={(event) => setLocation(event.target.value)} />
             </Box>
               </Grid>
               <Grid  item xs={6} md={4}>
               <Box sx={{ display: "flex", alignitems: "flex-end" }}>
-              <TextField label="Compony" fullWidth variant='standard' value={company} onChange={(event) => setCompany(event.target.value)} />
+              <TextField label="Company" fullWidth variant='standard' value={school} onChange={(event) => setSchool(event.target.value)} />
               </Box>
               </Grid>
                 
                 <Grid  item xs={6} md={4}>
                 <Box sx={{ display: "flex", alignitems: "flex-end" }}>
-                <TextField label="Price" fullWidth variant='standard' value={price} onChange={(event) => setPrice(event.target.value)} />
+                <TextField label="email" fullWidth variant='standard' value={email} onChange={(event) => setEmail(event.target.value)} />
            
                 </Box>
                 </Grid>
                 <Grid  item xs={6} md={4}>
                 <Box sx={{ display: "flex", alignitems: "flex-end" }}>
-                <TextField label="Stock"  fullWidth variant='standard' value={stock} onChange={(event) => setStock(event.target.value)} />
+                <TextField label="phone"  fullWidth variant='standard' value={phone} onChange={(event) => setPhone(event.target.value)} />
                 </Box>
                 </Grid>
             

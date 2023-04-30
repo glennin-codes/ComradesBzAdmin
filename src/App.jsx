@@ -22,6 +22,7 @@ function App() {
     <Routes>
       <Route path="/admin" element={<Products />} />
       <Route path="/manage" element={<Manageproducts />} />
+      {/* <Route path="/manageUsers" element={<ManageUsers />} /> */}
       <Route path="/" element={<Login />} />
       <Route path="/auth/signup" element={<SignUp />} />
       <Route path="/verifycode" element={<VerifyEmail />} />
