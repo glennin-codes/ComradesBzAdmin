@@ -11,20 +11,20 @@ import { Box } from "@mui/system";
 import Alert from "@mui/material/Alert"
 import { useNavigate } from "react-router-dom";
 
-export default function UpdateUserForm({product, onClose,setRefresh,openner}) {
-  const [name, setName] = useState(product.name);
-  const [location, setLocation] = useState(product.location);
-  const [school, setSchool] = useState(product.school);
-  const [email, setEmail] = useState(product.email);
-  const [phone, setPhone] = useState(product.phone);
+export default function UpdateUserForm({user, onClose,setRefresh,openner}) {
+  const [name, setName] = useState(user.name);
+  const [location, setLocation] = useState(user.location);
+  const [school, setSchool] = useState(user.school);
+  const [email, setEmail] = useState(user.email);
+  const [phone, setPhone] = useState(user.phone);
   const [open, setOpen] = useState(openner);
   const[success,setSuccess]=useState("");
   const[error,setError]=useState("");
   const navigate=useNavigate();
-  console.log(product);
-  console.log(product._id)
-  console.log(product.isVerified);
-  const [verified, setVerified] =useState(product.isVerified);
+  console.log(user);
+  console.log(user._id)
+  console.log(user.isVerified);
+  const [verified, setVerified] =useState(user.isVerified);
  
     
   const handleVerified = (event) => {
@@ -41,7 +41,7 @@ export default function UpdateUserForm({product, onClose,setRefresh,openner}) {
       const config = {
         headers: { Authorization: `Bearer ${token}` }
       };
-    const res = await axios.put(`https://comradesbizapi.azurewebsites.net/api/user/${product._id}`, {
+    const res = await axios.put(`https://comradesbizapi.azurewebsites.net/api/user/${user._id}`, {
         name,
         email,
         location,
@@ -52,7 +52,7 @@ export default function UpdateUserForm({product, onClose,setRefresh,openner}) {
       config
       );
       if (res.status === 200) {
-        setSuccess("Product updated successfully");
+        setSuccess("user updated successfully");
            setRefresh(prevState => !prevState)
         setOpen(false);
         onClose();
@@ -61,7 +61,7 @@ export default function UpdateUserForm({product, onClose,setRefresh,openner}) {
      
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setError("Product not found");
+        setError("user not found");
       
       } 
        else if ( error.response && error.response.status === 401) {
@@ -90,7 +90,7 @@ export default function UpdateUserForm({product, onClose,setRefresh,openner}) {
     <div>
         {success && <Alert severity='success'>{success}</Alert>}
         {error && <Alert severity='error'>{error}</Alert>}
-      {/* <Button onClick={() => setOpen(true)}>Update Product</Button> */}
+      {/* <Button onClick={() => setOpen(true)}>Update user</Button> */}
     
       <Box  maxWidth="md" width='12' sx={{ my: 4, mx: "auto" }}
      
@@ -98,7 +98,7 @@ export default function UpdateUserForm({product, onClose,setRefresh,openner}) {
       <Dialog open={open} onClose={() => setOpen(false)}
      
       >
-        <DialogTitle>Update Product</DialogTitle>
+        <DialogTitle>Update User</DialogTitle>
         <DialogContent >
 
       

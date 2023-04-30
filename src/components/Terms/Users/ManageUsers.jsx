@@ -18,33 +18,33 @@ import { Delete, Edit, Verified} from '@mui/icons-material';
 import UpdateUserForm from "./UpdateUsers";
 
 export const ManageUsers=()=>{
-    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedUser, setselectedUser] = useState(null);
   const navigate = useNavigate();
 
-  const [products, setProducts] = useState([]);
+  const [users, setusers] = useState([]);
   const [success, setSuccess] = React.useState("");
   const [refresh, setRefresh] = useState(false);
   const [open,setOpen]=useState(false);
   useEffect(() => {
-    const fetchproducts = async () => {
+    const fetchusers = async () => {
       const { data } = await axios.get(
         "https://comradesbizapi.azurewebsites.net/api/user"
       );
-      setProducts(data);
+      setusers(data);
     };
-    fetchproducts();
+    fetchusers();
   }, [refresh]);
-  const handleEditClick = (productId) => {
-    const product = products.find((p) => p._id === productId);
-    setSelectedProduct(product);
+  const handleEditClick = (userId) => {
+    const user = users.find((p) => p._id === userId);
+    setselectedUser(user);
     setOpen(true);
     
   };
-  const deleteProduct = async (_id) => {
+  const deleteuser = async (_id) => {
     try {
       setSuccess("");
       alert(
-        `Are you sure you want to delete product with ${_id} id? This action is irreversible!`
+        `Are you sure you want to delete user with ${_id} id? This action is irreversible!`
       );
       const token=localStorage.getItem('token'); // Get token from local storage
       const config = {
@@ -56,13 +56,13 @@ export const ManageUsers=()=>{
         config
       );
       if (res.status === 200) {
-        setSuccess("Product deleted successfully");
+        setSuccess("user deleted successfully");
         setRefresh((prevState) => !prevState);
       }
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 404) {
-        alert("Product not found");
+        alert("user not found");
       } else if (error.response.status === 401) {
         alert("You are not authorized to access this resource.");
       } else if (error.response.status === 403) {
@@ -83,12 +83,12 @@ export const ManageUsers=()=>{
 
 return(
     <>
-    {selectedProduct && (
+    {selectedUser && (
       <UpdateUserForm
-        product={selectedProduct}
+        user={selectedUser}
         openner={open}
         onClose={() => {
-          setSelectedProduct(null);
+          setselectedUser(null);
          
         }}
         setRefresh={setRefresh}
@@ -120,7 +120,7 @@ return(
            
 
             <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Validated</TableCell>
-            <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Number of Products</TableCell>
+            <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Number of users</TableCell>
             <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Paid</TableCell>
             <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Time Registered</TableCell>
             <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Edit</TableCell>
@@ -129,7 +129,7 @@ return(
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map((product) => {
+          {users.map((user) => {
             const {
               name,
               _id,    
@@ -139,8 +139,10 @@ return(
         school,
         phone,
         createdAt
-            } = product;
-         
+            } = user;
+         useEffect({
+      
+         },[])
 
             return (
               <TableRow
@@ -169,7 +171,7 @@ return(
                     color="primary"
                     size="small"
                     
-                    onClick={() => handleEditClick(product._id)
+                    onClick={() => handleEditClick(user._id)
                     }
                   >
                     <Edit />
@@ -181,7 +183,7 @@ return(
                    
                     color="error"
                     // disabled={currentUser?.email!=='milesmotorssocialmedia@gmail.com'}
-                    onClick={() => deleteProduct(_id)}
+                    onClick={() => deleteuser(_id)}
                   >
                     <Delete/>
                   </IconButton>
@@ -199,7 +201,7 @@ return(
       sx={{ textAlign: "right", color: "magenta", fontSize: "2.5rem" }}
     >
       <Typography component={Link} to="/manage">
-        mannage Products
+        mannage users
       </Typography>
     </Grid>
   </>

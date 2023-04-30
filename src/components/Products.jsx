@@ -145,6 +145,9 @@ export default function Products() {
   console.log(images);
   const handleSubmit = (event) => {
     event.preventDefault();
+    if(images.length===0){
+      return setError("an image must be uploaded")
+    }
     setIsSubmit(true);
     setIsUpLoading("Uploading to database.. wait for about a minute please");
 
