@@ -167,7 +167,7 @@ const UserProfile = () => {
          css={override}
          size={150}
        />
-       <Heading>fetching user profile ,please wait ....</Heading>
+       <Heading>fetching Admin profile ,please wait ....</Heading>
        </>
 
       ):

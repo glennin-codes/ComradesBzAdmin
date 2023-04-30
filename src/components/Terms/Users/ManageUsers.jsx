@@ -12,10 +12,16 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import moment from "moment";
-import { Grid, IconButton } from "@mui/material";
+import { CircularProgress, Grid, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit, Verified} from '@mui/icons-material';
 import UpdateUserForm from "./UpdateUsers";
+import { ClipLoader } from "react-spinners";
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 export const ManageUsers=()=>{
     const [selectedUser, setselectedUser] = useState(null);
@@ -25,11 +31,19 @@ export const ManageUsers=()=>{
   const [success, setSuccess] = React.useState("");
   const [refresh, setRefresh] = useState(false);
   const [open,setOpen]=useState(false);
+  const[productFeatures,setProductFeatures]=useState([]);
+  const [loading, setLoading] = useState(false);
+  const [ productsLoading,setProductsLoading]=useState(false);
+  const [error, setError] = React.useState("");
+
   useEffect(() => {
+
+    setLoading(true);
     const fetchusers = async () => {
       const { data } = await axios.get(
         "https://comradesbizapi.azurewebsites.net/api/user"
       );
+      setLoading(false);
       setusers(data);
     };
     fetchusers();
@@ -83,6 +97,7 @@ export const ManageUsers=()=>{
 
 return(
     <>
+  
     {selectedUser && (
       <UpdateUserForm
         user={selectedUser}
@@ -94,9 +109,20 @@ return(
         setRefresh={setRefresh}
       />
     )}
+  {loading ?(
+       
+         <ClipLoader
+         color={"#36D7B7"}
+         loading={loading}
+         css={override}
+         size={150}/>
+       
+
+      ):
 
     <TableContainer component={Paper}>
       {success && <Alert severity="success">{success}</Alert>}
+     {error && <Alert severity="error">{error}</Alert>}
       <Table
         sx={{
           width: "100vw",
@@ -140,9 +166,52 @@ return(
         phone,
         createdAt
             } = user;
-         useEffect({
-      
-         },[])
+            useEffect(() => {
+              setProductsLoading(true);
+              // Fetch user data from API
+             const fetchData=async ()=>{
+              try{
+               const response= await axios.get(`https://comradesbizapi.azurewebsites.net/api/use/products/${email}`)
+                if (response){
+
+                  setProductsLoading(false);
+                if(response.length >0){
+                   const promise=  response.map(
+                      (product)=>{
+                        const {featured,isClean,secondHand}=product.data;
+                        return featured,isClean,secondHand
+                      }
+                     )
+                   setProductFeatures(await  Promise.all(promise))
+                }
+                }
+                
+              }
+              catch(error) {
+                 
+
+                setProductsLoading(false);
+                  console.error(error);
+                  if(error){
+                  if (error.response && error.response.status === 404) {
+                    setError("User not found");
+                  
+                  } 
+                  else if ( error.response && error.response.status === 500){
+                      console.log(error.response.data);
+                     setError("Server error!");
+                  }
+                  else {
+                    setError("network error while trying to fetch!,check your connections and try again");
+                   
+                  }
+          
+                }
+                };
+              }
+              fetchData();
+            }, []);
+          
 
             return (
               <TableRow
@@ -161,7 +230,8 @@ return(
 
                 <TableCell sx={{ width: "6vw" }} component="td" scope="row" >{school}</TableCell>
                 <TableCell sx={{ width: "4vw" }} component="td" scope="row">{isVerified ? <Verified color="primary" /> : <Verified color="error" />}</TableCell>
-                <TableCell sx={{ width: "4vw" }} component="td" scope="row" >2</TableCell>
+                <TableCell sx={{ width: "4vw" }} component="td" scope="row" >{ productsLoading?<CircularProgress size={24} />:
+                 productFeatures}</TableCell>
                 <TableCell sx={{ width: "4vw" }} component="td" scope="row">0 KSH</TableCell>
                 <TableCell sx={{ width: "8vw" }} component="td" scope="row" >{moment(createdAt).format("Do MMM YYYY, h:mm:ss a")}</TableCell>
                 <TableCell>
@@ -194,6 +264,7 @@ return(
         </TableBody>
       </Table>
     </TableContainer>
+}
 
     <Grid
       item
