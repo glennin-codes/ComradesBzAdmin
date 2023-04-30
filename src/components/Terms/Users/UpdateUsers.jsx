@@ -1,4 +1,4 @@
-import {  Grid  , TextField } from "@mui/material";
+import {  Checkbox, Grid  , TextField } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
@@ -11,18 +11,25 @@ import { Box } from "@mui/system";
 import Alert from "@mui/material/Alert"
 import { useNavigate } from "react-router-dom";
 
-export default function UpdateProductForm({product, onClose,setRefresh}) {
+export default function UpdateUserForm({product, onClose,setRefresh,openner}) {
   const [name, setName] = useState(product.name);
   const [location, setLocation] = useState(product.location);
   const [school, setSchool] = useState(product.school);
   const [email, setEmail] = useState(product.email);
   const [phone, setPhone] = useState(product.phone);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(openner);
   const[success,setSuccess]=useState("");
   const[error,setError]=useState("");
   const navigate=useNavigate();
   console.log(product);
   console.log(product._id)
+  console.log(product.isVerified);
+  const [verified, setVerified] =useState(product.isVerified);
+ 
+    
+  const handleVerified = (event) => {
+   setVerified(event.target.verified);
+ };
 
   const handleSubmit = async (event) => {
 
@@ -38,8 +45,7 @@ export default function UpdateProductForm({product, onClose,setRefresh}) {
         name,
         email,
         location,
-        isVerified,
-        createdAt,
+        verified,
         school,
         phone
       },
@@ -84,41 +90,55 @@ export default function UpdateProductForm({product, onClose,setRefresh}) {
     <div>
         {success && <Alert severity='success'>{success}</Alert>}
         {error && <Alert severity='error'>{error}</Alert>}
-      <Button onClick={() => setOpen(true)}>Update Product</Button>
+      {/* <Button onClick={() => setOpen(true)}>Update Product</Button> */}
     
-      <Box maxWidth="sm" sx={{ my: 4, mx: "auto" }}>
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Box  maxWidth="md" width='12' sx={{ my: 4, mx: "auto" }}
+     
+      >
+      <Dialog open={open} onClose={() => setOpen(false)}
+     
+      >
         <DialogTitle>Update Product</DialogTitle>
         <DialogContent >
 
       
-        <Grid  item  xs={6} md={4}>
+        <Grid  item  xs={6} md={6}>
         <Box sx={{ display: "flex", alignitems: "flex-end" }}>
             <TextField variant='standard' fullWidth  label="Name" value={name} onChange={(event) => setName(event.target.value)} />
            </Box>
               </Grid>
-              <Grid  item xs={6} md={4}>
+              <Grid  item xs={6} md={6}>
               <Box sx={{ display: "flex", alignitems: "flex-end" }}>
               <TextField label="location" fullWidth variant='standard' value={location} onChange={(event) => setLocation(event.target.value)} />
             </Box>
               </Grid>
-              <Grid  item xs={6} md={4}>
+              <Grid  item xs={6} md={6}>
               <Box sx={{ display: "flex", alignitems: "flex-end" }}>
-              <TextField label="Company" fullWidth variant='standard' value={school} onChange={(event) => setSchool(event.target.value)} />
+              <TextField label="School" fullWidth variant='standard' value={school} onChange={(event) => setSchool(event.target.value)} />
               </Box>
               </Grid>
                 
-                <Grid  item xs={6} md={4}>
+                <Grid  item xs={6} md={6}>
                 <Box sx={{ display: "flex", alignitems: "flex-end" }}>
                 <TextField label="email" fullWidth variant='standard' value={email} onChange={(event) => setEmail(event.target.value)} />
            
                 </Box>
                 </Grid>
-                <Grid  item xs={6} md={4}>
+                <Grid  item xs={6} md={6}>
                 <Box sx={{ display: "flex", alignitems: "flex-end" }}>
                 <TextField label="phone"  fullWidth variant='standard' value={phone} onChange={(event) => setPhone(event.target.value)} />
                 </Box>
                 </Grid>
+                <Grid item xs={6} md={6}>
+                <Box sx={{ display: "flex", alignitems: "flex-end" }}>
+email is verified?
+                  <Checkbox
+    checked={verified}
+      onChange={handleVerified}
+        sx={{ '& .MuiSvgIcon-root': { fontSize: 24} }}
+      />
+      </Box>
+      </Grid>
             
           
         </DialogContent>

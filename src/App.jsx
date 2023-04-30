@@ -11,6 +11,7 @@ import LandingPage from "./components/Auth/landingPage";
 import UserProfile from "./components/Auth/UserProfile";
 import { AuthProvider } from "./components/context/AuthContext";
 import TermsOfServices from "./components/Terms/TermsOfServices";
+import { ManageUsers } from "./components/Terms/Users/ManageUsers";
 
 function App() {
  
@@ -22,7 +23,7 @@ function App() {
     <Routes>
       <Route path="/admin" element={<Products />} />
       <Route path="/manage" element={<Manageproducts />} />
-      {/* <Route path="/manageUsers" element={<ManageUsers />} /> */}
+      <Route path="/manageUsers" element={<ManageUsers />} />
       <Route path="/" element={<Login />} />
       <Route path="/auth/signup" element={<SignUp />} />
       <Route path="/verifycode" element={<VerifyEmail />} />

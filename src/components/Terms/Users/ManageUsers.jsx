@@ -11,9 +11,12 @@ import axios from "axios";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import UpdateProductForm from "./UpdateProduct";
-import { Grid } from "@mui/material";
+import moment from "moment";
+import { Grid, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { Delete, Edit, Verified} from '@mui/icons-material';
+import UpdateUserForm from "./UpdateUsers";
+
 export const ManageUsers=()=>{
     const [selectedProduct, setSelectedProduct] = useState(null);
   const navigate = useNavigate();
@@ -21,10 +24,11 @@ export const ManageUsers=()=>{
   const [products, setProducts] = useState([]);
   const [success, setSuccess] = React.useState("");
   const [refresh, setRefresh] = useState(false);
+  const [open,setOpen]=useState(false);
   useEffect(() => {
     const fetchproducts = async () => {
       const { data } = await axios.get(
-        "https://comradesbizapi.azurewebsites.net/user"
+        "https://comradesbizapi.azurewebsites.net/api/user"
       );
       setProducts(data);
     };
@@ -33,6 +37,7 @@ export const ManageUsers=()=>{
   const handleEditClick = (productId) => {
     const product = products.find((p) => p._id === productId);
     setSelectedProduct(product);
+    setOpen(true);
     
   };
   const deleteProduct = async (_id) => {
@@ -79,8 +84,9 @@ export const ManageUsers=()=>{
 return(
     <>
     {selectedProduct && (
-      <UpdateProductForm
+      <UpdateUserForm
         product={selectedProduct}
+        openner={open}
         onClose={() => {
           setSelectedProduct(null);
          
@@ -94,7 +100,7 @@ return(
       <Table
         sx={{
           width: "100vw",
-          maxWidth: "100vw",
+          maxWidth: "90vw",
           overflowX: "auto",
           "&::-webkit-scrollbar": { height: 8 },
           "&::-webkit-scrollbar-thumb": {
@@ -106,73 +112,79 @@ return(
       >
         <TableHead sx={{ width: "100vw" }}>
           <TableRow>
-            <TableCell sx={{ width: "8vw" }}>Name</TableCell>
-            <TableCell sx={{ width: "8vw" }}>Phone</TableCell>
-            <TableCell sx={{ width: "8vw" }}>Email</TableCell>
-            <TableCell sx={{ width: "8vw" }}>School</TableCell>
-            <TableCell sx={{ width: "8vw" }}>Location</TableCell>
-            <TableCell sx={{ width: "8vw" }}>Number of Products</TableCell>
-            <TableCell sx={{ width: "8vw" }}>validated</TableCell>
-            <TableCell sx={{ width: "8vw" }}>Time Registered</TableCell>
-            <TableCell sx={{ width: "8vw" }}>Paid</TableCell>
+            <TableCell sx={{ width: "6vw" }}   component="th" scope="row" > Email</TableCell>
+            <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Name</TableCell>
+            <TableCell sx={{ width: "6vw" }}    component="th" scope="row" >Phone</TableCell>
+            <TableCell sx={{ width: "6vw" }}    component="th" scope="row" >Location</TableCell>
+            <TableCell sx={{ width: "6vw" }}    component="th" scope="row" >School</TableCell>
+           
+
+            <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Validated</TableCell>
+            <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Number of Products</TableCell>
+            <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Paid</TableCell>
+            <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Time Registered</TableCell>
+            <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Edit</TableCell>
+            <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Delete</TableCell>
+    
           </TableRow>
         </TableHead>
         <TableBody>
           {products.map((product) => {
             const {
               name,
-              _id,
-              image,
-              category,
-              price,
-              color,
-              company,
-              stock,
+              _id,    
+        email,
+        location,
+        isVerified,
+        school,
+        phone,
+        createdAt
             } = product;
+         
 
             return (
               <TableRow
                 key={_id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell sx={{ width: "8vw" }} component="th" scope="row">
+                <TableCell sx={{ width: "8vw" }} component="td" scope="row">
                   {name}
                 </TableCell>
-                <TableCell sx={{ width: "8vw" }} component="th" scope="row">
-                  <img
-                    src={image[0]?.url}
-                    alt={""}
-                    style={{ height: "100px", width: "100px" }}
-                  />
-                </TableCell>
-                <TableCell sx={{ width: "8vw" }}>{category}</TableCell>
+            
+                <TableCell sx={{ width: "6vw" }} component="td" scope="row" >{email}</TableCell>
 
-                <TableCell sx={{ width: "8vw" }}>{company}</TableCell>
+                <TableCell sx={{ width: "6vw" }}  component="td" scope="row">{phone}</TableCell>
 
-                <TableCell sx={{ width: "8vw" }}>{stock}</TableCell>
+                <TableCell sx={{ width: "6vw" }} component="td" scope="row" >{location}</TableCell>
 
-                <TableCell sx={{ width: "8vw" }}>{price}</TableCell>
+                <TableCell sx={{ width: "6vw" }} component="td" scope="row" >{school}</TableCell>
+                <TableCell sx={{ width: "4vw" }} component="td" scope="row">{isVerified ? <Verified color="primary" /> : <Verified color="error" />}</TableCell>
+                <TableCell sx={{ width: "4vw" }} component="td" scope="row" >2</TableCell>
+                <TableCell sx={{ width: "4vw" }} component="td" scope="row">0 KSH</TableCell>
+                <TableCell sx={{ width: "8vw" }} component="td" scope="row" >{moment(createdAt).format("Do MMM YYYY, h:mm:ss a")}</TableCell>
                 <TableCell>
-                  <Typography
-                    component={Button}
-                    aria-label="edit"
+                  <IconButton
+                    // component={Button}
+                    // aria-label="edit"
                     color="primary"
                     size="small"
-                    onClick={() => handleEditClick(product._id)}
+                    
+                    onClick={() => handleEditClick(product._id)
+                    }
                   >
-                    Edit
-                  </Typography>
+                    <Edit />
+                  </IconButton>
                 </TableCell>
 
                 <TableCell sx={{ width: "8vw" }}>
-                  <Typography
-                    component={Button}
+                  <IconButton
+                   
                     color="error"
                     // disabled={currentUser?.email!=='milesmotorssocialmedia@gmail.com'}
                     onClick={() => deleteProduct(_id)}
                   >
-                    Delete
-                  </Typography>
+                    <Delete/>
+                  </IconButton>
                 </TableCell>
               </TableRow>
             );
