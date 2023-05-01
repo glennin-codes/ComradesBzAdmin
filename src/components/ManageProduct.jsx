@@ -211,7 +211,9 @@ export default function Manageproducts() {
         xs={12}
         sx={{ textAlign: "right", color: "magenta", fontSize: "2.5rem" }}
       >
-        <Typography component={Link} to="/manageUsers">
+        <Typography component={Link} to="/manageUsers"
+         sx={{color: "magenta", fontSize: "1.5rem" }}
+        >
         manage Users
         </Typography>
       </Grid>
@@ -220,7 +222,9 @@ export default function Manageproducts() {
         xs={12}
         sx={{ textAlign: "right", color: "magenta", fontSize: "2.5rem" }}
       >
-        <Typography component={Link} to="/admin">
+        <Typography component={Link} to="/admin"
+         sx={{color: "magenta", fontSize: "1.5rem" }}
+        >
           add Products
         </Typography>
         

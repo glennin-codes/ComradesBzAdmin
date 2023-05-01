@@ -415,12 +415,23 @@ export default function Products() {
             </Grid>
 
             <Grid item xs={12} sx={{ textAlign: "right" }}>
-              <Typography component={Link} to="/manage">
+              <Typography component={Link} to="/manage"
+               sx={{color: "magenta", fontSize: "1.5rem" }}
+              >
                 Manage All Products
               </Typography>
             </Grid>
             <Grid item xs={12} sx={{ textAlign: "right" }}>
-              <Typography component={Link} to="/userProfile">
+              <Typography component={Link} to="/manageUsers"
+               sx={{color: "magenta", fontSize: "1.5rem" }}
+              >
+                Manage All Users
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sx={{ textAlign: "right" }}>
+              <Typography component={Link} to="/userProfile"
+               sx={{color: "magenta", fontSize: "1.5rem" }}
+              >
                 Profile Acount
               </Typography>
             </Grid>
