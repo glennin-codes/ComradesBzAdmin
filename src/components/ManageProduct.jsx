@@ -14,6 +14,9 @@ import Alert from "@mui/material/Alert";
 import UpdateProductForm from "./UpdateProduct";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+import { css } from '@emotion/react';
+import { ClipLoader } from "react-spinners";
+
 const override = css`
   display: block;
   margin: 0 auto;
@@ -29,10 +32,12 @@ export default function Manageproducts() {
   const [refresh, setRefresh] = useState(false);
   useEffect(() => {
     const fetchproducts = async () => {
+      setLoading(true);
       const { data } = await axios.get(
         "https://comradesbizapi.azurewebsites.net/api/products/all"
       );
       setProducts(data);
+      setLoading(false);
     };
     fetchproducts();
   }, [refresh]);
@@ -94,16 +99,7 @@ export default function Manageproducts() {
           setRefresh={setRefresh}
         />
       )}
-      {loading ?(
-       
-       <ClipLoader
-       color={"#36D7B7"}
-       loading={loading}
-       css={override}
-       size={150}/>
-     
-
-    ):
+ 
 
       <TableContainer component={Paper}>
         {success && <Alert severity="success">{success}</Alert>}
@@ -133,6 +129,16 @@ export default function Manageproducts() {
               <TableCell sx={{ width: "8vw" }}>Trash</TableCell>
             </TableRow>
           </TableHead>
+          {loading ?(
+       
+       <ClipLoader
+       color={"#36D7B7"}
+       loading={loading}
+       css={override}
+       size={150}/>
+     
+
+    ):
           <TableBody>
             {products.map((product) => {
               const {
@@ -196,17 +202,28 @@ export default function Manageproducts() {
               );
             })}
           </TableBody>
+}
         </Table>
       </TableContainer>
-}
+
+      <Grid
+        item
+        xs={12}
+        sx={{ textAlign: "right", color: "magenta", fontSize: "2.5rem" }}
+      >
+        <Typography component={Link} to="/manageUsers">
+        manage Users
+        </Typography>
+      </Grid>
       <Grid
         item
         xs={12}
         sx={{ textAlign: "right", color: "magenta", fontSize: "2.5rem" }}
       >
         <Typography component={Link} to="/admin">
-          add more products to database
+          add Products
         </Typography>
+        
       </Grid>
     </>
   );

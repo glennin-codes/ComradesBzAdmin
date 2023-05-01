@@ -74,6 +74,7 @@ const UserProfile = () => {
         setLocation(location);
           setSchool(school);
           setError('');
+          setLoading(false);
       }
       
     }

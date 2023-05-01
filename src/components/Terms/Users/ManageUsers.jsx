@@ -51,15 +51,19 @@ export const ManageUsers=()=>{
     fetchusers();
 
     const fetchProductFeatures = async () => {
-      setProductsLoading(true);
+      
       let promises = [];
       
-     
+      setProductsLoading(true);
 
       users.forEach((user) => {
+        
+        setEmail(user.email)
         const promise = axios
           .get(`https://comradesbizapi.azurewebsites.net/api/user/products/${user.email}`)
-          .then((response) => response.data)
+          .then((response) => response.data
+         
+          )
           .catch((error) => {
 
             if (error.response && error.response.status === 404) {
@@ -69,20 +73,24 @@ export const ManageUsers=()=>{
           });
       
         promises.push(promise);
-
-        setProductsLoading(false)
+        
+      
+       
       });
 
-      
+     
       Promise.all(promises)
+     
         .then((results) => {
+         
           const products = results.flat(); // flatten the array of arrays
           setProductFeatures(products);
-        })
+          setProductsLoading(false);
       
+        }) 
       
         .catch((error) => {
-          setProductsLoading(false);
+           
           if (error.response && error.response.status === 500) {
             console.log(error.response.data);
             setError("Server error!");
@@ -90,6 +98,9 @@ export const ManageUsers=()=>{
             setError("Network error while trying to fetch! Check your connection and try again.");
           }
         });
+         
+       
+    
     }
 fetchProductFeatures();
   console.log('features',productFeatures)
@@ -98,7 +109,7 @@ fetchProductFeatures();
   
    
   
-  }, [refresh]);
+  }, [refresh,email]);
  
   
 
@@ -164,16 +175,7 @@ return(
         setRefresh={setRefresh}
       />
     )}
-  {loading ?(
-       
-         <ClipLoader
-         color={"#36D7B7"}
-         loading={loading}
-         css={override}
-         size={150}/>
-       
-
-      ):
+ 
 
     <TableContainer component={Paper}>
       {success && <Alert severity="success">{success}</Alert>}
@@ -213,6 +215,16 @@ return(
     
           </TableRow>
         </TableHead>
+        {loading ?(
+       
+       <ClipLoader
+       color={"#36D7B7"}
+       loading={loading}
+       css={override}
+       size={150}/>
+     
+
+    ):
         <TableBody>
           {users.map((user) => {
             const {
@@ -283,9 +295,9 @@ return(
             );
           })}
         </TableBody>
+}
       </Table>
     </TableContainer>
-}
 
     <Grid
       item
@@ -293,7 +305,7 @@ return(
       sx={{ textAlign: "right", color: "magenta", fontSize: "2.5rem" }}
     >
       <Typography component={Link} to="/manage">
-        mannage users
+        mannage all products
       </Typography>
     </Grid>
   </>
