@@ -110,7 +110,21 @@ export default function Manageproducts() {
      
 
     ):
-      <TableContainer component={Paper}>
+    <>
+    <Typography component='h2'
+    sx={{textAlign:'center',
+     fontFamily:"Ubuntu",
+    fontSize:"1.5rem"
+  }}
+    >Manage Products</Typography>
+
+    <Grid container spacing={2} sx={{marginTop:"1.5rem"}}>
+      <TableContainer component={Paper}
+       sx={{
+        background:"grey",
+        
+      }}
+      >
         {success && <Alert severity="success">{success}</Alert>}
         <Table
           sx={{
@@ -205,6 +219,8 @@ export default function Manageproducts() {
 
         </Table>
       </TableContainer>
+    </Grid>
+      </>
 }
       <Grid
         item

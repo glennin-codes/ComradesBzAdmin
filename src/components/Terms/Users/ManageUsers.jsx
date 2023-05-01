@@ -164,7 +164,23 @@ return(
      
    
     ):
-    <TableContainer component={Paper}>
+<>
+    <Typography component='h2'
+    sx={{textAlign:'center',
+     fontFamily:"Ubuntu",
+    fontSize:"1.5rem"
+  }}
+    >
+       Manage All Users
+    </Typography>
+    <Grid container spacing={2} sx={{marginTop:"1.5rem"}}>
+    <TableContainer component={Paper}
+    sx={{
+      background:"grey",
+      
+    }}
+
+    >
       {success && <Alert severity="success">{success}</Alert>}
      {error && <Alert severity="error">{error}</Alert>}
       <Table
@@ -276,6 +292,8 @@ return(
 
       </Table>
     </TableContainer>
+  </Grid>
+    </>
 }
     <Grid
       item
