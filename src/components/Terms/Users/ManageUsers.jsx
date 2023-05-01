@@ -28,7 +28,7 @@ export const ManageUsers=()=>{
     const [selectedUser, setselectedUser] = useState(null);
   const navigate = useNavigate();
 
-  const [users, setusers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [success, setSuccess] = React.useState("");
   const [refresh, setRefresh] = useState(false);
   const [open,setOpen]=useState(false);
@@ -39,78 +39,54 @@ export const ManageUsers=()=>{
   const [email, setEmail] = React.useState("");
 
   useEffect(() => {
-
     setLoading(true);
-    const fetchusers = async () => {
-      const { data } = await axios.get(
-        "https://comradesbizapi.azurewebsites.net/api/user"
-      );
-      setLoading(false);
-      setusers(data);
-    };
-    fetchusers();
-
-    const fetchProductFeatures = async () => {
-      
-      let promises = [];
-      
-      setProductsLoading(true);
-
-      users.forEach((user) => {
+    const fetchUsersAndProductFeatures = async () => {
+      try {
+        const { data } = await axios.get(
+          "https://comradesbizapi.azurewebsites.net/api/user"
+        );
+        setUsers(data);
         
-        setEmail(user.email)
-        const promise = axios
-          .get(`https://comradesbizapi.azurewebsites.net/api/user/products/${user.email}`)
-          .then((response) => response.data
-         
-          )
-          .catch((error) => {
-
-            if (error.response && error.response.status === 404) {
-              return []; // return an empty array if 404 error occurs
-            }
-            throw error; // throw other errors
-          });
-      
-        promises.push(promise);
-        
-      
-       
-      });
-
-     
-      Promise.all(promises)
-     
-        .then((results) => {
-         
-          const products = results.flat(); // flatten the array of arrays
-          setProductFeatures(products);
-          setProductsLoading(false);
-      
-        }) 
-      
-        .catch((error) => {
-           
-          if (error.response && error.response.status === 500) {
-            console.log(error.response.data);
-            setError("Server error!");
-          } else {
-            setError("Network error while trying to fetch! Check your connection and try again.");
-          }
+        let promises = [];
+  
+        setProductsLoading(true);
+  
+        data.forEach((user) => {
+          const promise = axios
+            .get(`https://comradesbizapi.azurewebsites.net/api/user/products/${user.email}`)
+            .then((response) => response.data)
+            .catch((error) => {
+              if (error.response && error.response.status === 404) {
+                return []; // return an empty array if 404 error occurs
+              }
+              throw error; // throw other errors
+            });
+          promises.push(promise);
         });
-         
-       
-    
-    }
-fetchProductFeatures();
-  console.log('features',productFeatures)
-
-
   
-   
-  
-  }, [refresh,email]);
- 
+        Promise.all(promises)
+          .then((results) => {
+            const products = results.flat(); // flatten the array of arrays
+            setProductFeatures(products);
+            setProductsLoading(false);
+          })
+          .catch((error) => {
+            if (error.response && error.response.status === 500) {
+              console.log(error.response.data);
+              setError("Server error!");
+            } else {
+              setError("Network error while trying to fetch! Check your connection and try again.");
+            }
+          });
+          
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+    fetchUsersAndProductFeatures();
+  }, [refresh]);
   
 
 
