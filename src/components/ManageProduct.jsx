@@ -12,10 +12,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import UpdateProductForm from "./UpdateProduct";
-import { Grid } from "@mui/material";
+import { Grid , IconButton} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { css } from '@emotion/react';
 import { ClipLoader } from "react-spinners";
+import { Delete, Edit } from "@mui/icons-material";
 
 const override = css`
   display: block;
@@ -190,28 +191,31 @@ export default function Manageproducts() {
                   <TableCell sx={{ width: "8vw" }}>{stock}</TableCell>
 
                   <TableCell sx={{ width: "8vw" }}>{price}</TableCell>
-                  <TableCell>
-                    <Typography
-                      component={Button}
-                      aria-label="edit"
-                      color="primary"
-                      size="small"
+                  <TableCell sx={{ width: "4vw" }}>
+                  <IconButton
+                  
+                    color="primary"
+                    size="small"
+                    
+                    
                       onClick={() => handleEditClick(product._id)}
                     >
-                      Edit
-                    </Typography>
-                  </TableCell>
+                     <Edit />
+                  </IconButton>
+                </TableCell>
 
-                  <TableCell sx={{ width: "8vw" }}>
-                    <Typography
-                      component={Button}
-                      color="error"
+                 
+                  <TableCell sx={{ width: "4vw" }}>
+                  <IconButton
+                   
+                    color="error"
+                    
                       // disabled={currentUser?.email!=='milesmotorssocialmedia@gmail.com'}
                       onClick={() => deleteProduct(_id)}
                     >
-                      Delete
-                    </Typography>
-                  </TableCell>
+                     <Delete/>
+                  </IconButton>
+                </TableCell>
                 </TableRow>
               );
             })}

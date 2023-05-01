@@ -275,7 +275,7 @@ return(
                   </IconButton>
                 </TableCell>
 
-                <TableCell sx={{ width: "8vw" }}>
+                <TableCell sx={{ width: "4vw" }}>
                   <IconButton
                    
                     color="error"
