@@ -14,11 +14,16 @@ import Alert from "@mui/material/Alert";
 import UpdateProductForm from "./UpdateProduct";
 import { Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
 export default function Manageproducts() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [success, setSuccess] = React.useState("");
   const [refresh, setRefresh] = useState(false);
@@ -89,6 +94,16 @@ export default function Manageproducts() {
           setRefresh={setRefresh}
         />
       )}
+      {loading ?(
+       
+       <ClipLoader
+       color={"#36D7B7"}
+       loading={loading}
+       css={override}
+       size={150}/>
+     
+
+    ):
 
       <TableContainer component={Paper}>
         {success && <Alert severity="success">{success}</Alert>}
@@ -183,7 +198,7 @@ export default function Manageproducts() {
           </TableBody>
         </Table>
       </TableContainer>
-
+}
       <Grid
         item
         xs={12}
