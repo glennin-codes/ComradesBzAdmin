@@ -17,6 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Delete, Edit, Verified} from '@mui/icons-material';
 import UpdateUserForm from "./UpdateUsers";
 import { ClipLoader } from "react-spinners";
+import { css } from '@emotion/react';
 const override = css`
   display: block;
   margin: 0 auto;
@@ -35,6 +36,7 @@ export const ManageUsers=()=>{
   const [loading, setLoading] = useState(false);
   const [ productsLoading,setProductsLoading]=useState(false);
   const [error, setError] = React.useState("");
+  const [email, setEmail] = React.useState("");
 
   useEffect(() => {
 
@@ -47,7 +49,60 @@ export const ManageUsers=()=>{
       setusers(data);
     };
     fetchusers();
+
+    const fetchProductFeatures = async () => {
+      setProductsLoading(true);
+      let promises = [];
+      
+     
+
+      users.forEach((user) => {
+        const promise = axios
+          .get(`https://comradesbizapi.azurewebsites.net/api/user/products/${user.email}`)
+          .then((response) => response.data)
+          .catch((error) => {
+
+            if (error.response && error.response.status === 404) {
+              return []; // return an empty array if 404 error occurs
+            }
+            throw error; // throw other errors
+          });
+      
+        promises.push(promise);
+
+        setProductsLoading(false)
+      });
+
+      
+      Promise.all(promises)
+        .then((results) => {
+          const products = results.flat(); // flatten the array of arrays
+          setProductFeatures(products);
+        })
+      
+      
+        .catch((error) => {
+          setProductsLoading(false);
+          if (error.response && error.response.status === 500) {
+            console.log(error.response.data);
+            setError("Server error!");
+          } else {
+            setError("Network error while trying to fetch! Check your connection and try again.");
+          }
+        });
+    }
+fetchProductFeatures();
+  console.log('features',productFeatures)
+
+
+  
+   
+  
   }, [refresh]);
+ 
+  
+
+
   const handleEditClick = (userId) => {
     const user = users.find((p) => p._id === userId);
     setselectedUser(user);
@@ -146,7 +201,7 @@ return(
            
 
             <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Validated</TableCell>
-            <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Number of users</TableCell>
+            <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Number of Products</TableCell>
             <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Paid</TableCell>
             <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Time Registered</TableCell>
             <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Edit</TableCell>
@@ -166,53 +221,8 @@ return(
         phone,
         createdAt
             } = user;
-            useEffect(() => {
-              setProductsLoading(true);
-              // Fetch user data from API
-             const fetchData=async ()=>{
-              try{
-               const response= await axios.get(`https://comradesbizapi.azurewebsites.net/api/use/products/${email}`)
-                if (response){
-
-                  setProductsLoading(false);
-                if(response.length >0){
-                   const promise=  response.map(
-                      (product)=>{
-                        const {featured,isClean,secondHand}=product.data;
-                        return featured,isClean,secondHand
-                      }
-                     )
-                   setProductFeatures(await  Promise.all(promise))
-                }
-                }
-                
-              }
-              catch(error) {
-                 
-
-                setProductsLoading(false);
-                  console.error(error);
-                  if(error){
-                  if (error.response && error.response.status === 404) {
-                    setError("User not found");
-                  
-                  } 
-                  else if ( error.response && error.response.status === 500){
-                      console.log(error.response.data);
-                     setError("Server error!");
-                  }
-                  else {
-                    setError("network error while trying to fetch!,check your connections and try again");
-                   
-                  }
           
-                }
-                };
-              }
-              fetchData();
-            }, []);
-          
-
+         
             return (
               <TableRow
                 key={_id}
@@ -230,8 +240,8 @@ return(
 
                 <TableCell sx={{ width: "6vw" }} component="td" scope="row" >{school}</TableCell>
                 <TableCell sx={{ width: "4vw" }} component="td" scope="row">{isVerified ? <Verified color="primary" /> : <Verified color="error" />}</TableCell>
-                <TableCell sx={{ width: "4vw" }} component="td" scope="row" >{ productsLoading?<CircularProgress size={24} />:
-                 productFeatures}</TableCell>
+                <TableCell sx={{ width: "4vw" }} component="td" scope="row" >{ productsLoading?<CircularProgress size={24} />:productFeatures.filter((product)=>product.user===email).length
+                 }</TableCell>
                 <TableCell sx={{ width: "4vw" }} component="td" scope="row">0 KSH</TableCell>
                 <TableCell sx={{ width: "8vw" }} component="td" scope="row" >{moment(createdAt).format("Do MMM YYYY, h:mm:ss a")}</TableCell>
                 <TableCell>
