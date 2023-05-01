@@ -220,11 +220,24 @@ const UserProfile = () => {
                     </Button>
                     </Grid>
                     <Grid item xs={12} sx={{ textAlign: "right" }}>
-              <Typography component={Link} to="/manage">
+              <Typography component={Link} to="/manage"
+                sx={{color: "magenta", fontSize: "1.5rem" }}
+              >
                 Manage All Products
               </Typography>
-              <Typography component={Link} to="/admin">
+              </Grid>
+              <Grid item xs={12} sx={{ textAlign: "right" }}>
+              <Typography component={Link} to="/admin"
+                sx={{color: "magenta", fontSize: "1.5rem" }}
+              >
                upload new Product
+              </Typography>
+            </Grid>
+              <Grid item xs={12} sx={{ textAlign: "right" }}>
+              <Typography component={Link} to="/manageUsers"
+                sx={{color: "magenta", fontSize: "1.5rem" }}
+              >
+               Manage all Users
               </Typography>
             </Grid>
                     {success && <Alert severity="success" position="right" >{success}</Alert>}
