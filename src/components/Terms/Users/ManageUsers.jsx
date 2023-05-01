@@ -182,8 +182,8 @@ return(
       >
         <TableHead sx={{ width: "100vw" }}>
           <TableRow>
-            <TableCell sx={{ width: "6vw" }}   component="th" scope="row" > Email</TableCell>
-            <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Name</TableCell>
+            <TableCell sx={{ width: "6vw" }}   component="th" scope="row" >Name</TableCell>
+            <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Email</TableCell>
             <TableCell sx={{ width: "6vw" }}    component="th" scope="row" >Phone</TableCell>
             <TableCell sx={{ width: "6vw" }}    component="th" scope="row" >Location</TableCell>
             <TableCell sx={{ width: "6vw" }}    component="th" scope="row" >School</TableCell>
