@@ -306,8 +306,10 @@ return(
       xs={12}
       sx={{ textAlign: "right", color: "magenta", fontSize: "2.5rem" }}
     >
-      <Typography component={Link} to="/manage">
-        mannage all products
+      <Typography component={Link} to="/manage"
+      sx={{color: "magenta", fontSize: "1.5rem" }}
+      >
+        manage all products
       </Typography>
     </Grid>
 
