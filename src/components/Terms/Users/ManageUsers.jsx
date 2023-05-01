@@ -202,6 +202,10 @@ return(
 
             <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Validated</TableCell>
             <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Number of Products</TableCell>
+            <TableCell sx={{ width: "3vw" }}    component="th" scope="row" >Number of Used Products</TableCell>
+            <TableCell sx={{ width: "3vw" }}    component="th" scope="row" >Number of New Products</TableCell>
+            <TableCell sx={{ width: "3vw" }}    component="th" scope="row" >Number of featured Products</TableCell>
+
             <TableCell sx={{ width: "4vw" }}    component="th" scope="row" >Paid</TableCell>
             <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Time Registered</TableCell>
             <TableCell sx={{ width: "8vw" }}    component="th" scope="row" >Edit</TableCell>
@@ -240,9 +244,16 @@ return(
 
                 <TableCell sx={{ width: "6vw" }} component="td" scope="row" >{school}</TableCell>
                 <TableCell sx={{ width: "4vw" }} component="td" scope="row">{isVerified ? <Verified color="primary" /> : <Verified color="error" />}</TableCell>
-                <TableCell sx={{ width: "4vw" }} component="td" scope="row" >{ productsLoading?<CircularProgress size={24} />:productFeatures.filter((product)=>product.user===email).length
+                <TableCell sx={{ width: "3vw" }} component="td" scope="row" >{ productsLoading?<CircularProgress size={24} />:productFeatures.filter((product)=>product.user===email).length
                  }</TableCell>
-                <TableCell sx={{ width: "4vw" }} component="td" scope="row">0 KSH</TableCell>
+                <TableCell sx={{ width: "3vw" }} component="td" scope="row" >{ productsLoading?<CircularProgress size={24} />:productFeatures.filter((product)=>product.user===email && product.secondHand === true).length
+                 }</TableCell>
+                <TableCell sx={{ width: "3vw" }} component="td" scope="row" >{ productsLoading?<CircularProgress size={24} />:productFeatures.filter((product)=>product.user===email && product.isClean === true).length
+                 }</TableCell>
+                <TableCell sx={{ width: "3vw" }} component="td" scope="row" >{ productsLoading?<CircularProgress size={24} />:productFeatures.filter((product) => product.user === email && product.featured === true).length
+
+                 }</TableCell>
+                <TableCell sx={{ width: "3vw" }} component="td" scope="row">0 KSH</TableCell>
                 <TableCell sx={{ width: "8vw" }} component="td" scope="row" >{moment(createdAt).format("Do MMM YYYY, h:mm:ss a")}</TableCell>
                 <TableCell>
                   <IconButton

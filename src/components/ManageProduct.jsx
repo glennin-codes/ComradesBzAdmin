@@ -109,6 +109,7 @@ export default function Manageproducts() {
             <TableRow>
               <TableCell sx={{ width: "8vw" }}>Product Name</TableCell>
               <TableCell sx={{ width: "8vw" }}>Image</TableCell>
+              <TableCell sx={{ width: "8vw" }}>Email</TableCell>
               <TableCell sx={{ width: "8vw" }}>Category</TableCell>
               <TableCell sx={{ width: "8vw" }}>Company</TableCell>
               <TableCell sx={{ width: "8vw" }}>Stock</TableCell>
@@ -128,6 +129,7 @@ export default function Manageproducts() {
                 color,
                 company,
                 stock,
+                user,
               } = product;
 
               return (
@@ -145,6 +147,7 @@ export default function Manageproducts() {
                       style={{ height: "100px", width: "100px" }}
                     />
                   </TableCell>
+                  <TableCell sx={{ width: "8vw" }}>{user}</TableCell>
                   <TableCell sx={{ width: "8vw" }}>{category}</TableCell>
 
                   <TableCell sx={{ width: "8vw" }}>{company}</TableCell>
