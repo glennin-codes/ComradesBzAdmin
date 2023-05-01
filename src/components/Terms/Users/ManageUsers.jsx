@@ -162,7 +162,9 @@ fetchProductFeatures();
   };
 
 return(
+ 
     <>
+      
   
     {selectedUser && (
       <UpdateUserForm
@@ -176,7 +178,16 @@ return(
       />
     )}
  
-
+ {loading ?(
+       
+       <ClipLoader
+       color={"#36D7B7"}
+       loading={loading}
+       css={override}
+       size={150}/>
+     
+   
+    ):
     <TableContainer component={Paper}>
       {success && <Alert severity="success">{success}</Alert>}
      {error && <Alert severity="error">{error}</Alert>}
@@ -215,16 +226,7 @@ return(
     
           </TableRow>
         </TableHead>
-        {loading ?(
-       
-       <ClipLoader
-       color={"#36D7B7"}
-       loading={loading}
-       css={override}
-       size={150}/>
-     
-
-    ):
+ 
         <TableBody>
           {users.map((user) => {
             const {
@@ -295,10 +297,10 @@ return(
             );
           })}
         </TableBody>
-}
+
       </Table>
     </TableContainer>
-
+}
     <Grid
       item
       xs={12}
@@ -308,6 +310,7 @@ return(
         mannage all products
       </Typography>
     </Grid>
+
   </>
 )
 }

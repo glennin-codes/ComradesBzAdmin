@@ -100,7 +100,16 @@ export default function Manageproducts() {
         />
       )}
  
+ {loading ?(
+       
+       <ClipLoader
+       color={"#36D7B7"}
+       loading={loading}
+       css={override}
+       size={150}/>
+     
 
+    ):
       <TableContainer component={Paper}>
         {success && <Alert severity="success">{success}</Alert>}
         <Table
@@ -129,16 +138,7 @@ export default function Manageproducts() {
               <TableCell sx={{ width: "8vw" }}>Trash</TableCell>
             </TableRow>
           </TableHead>
-          {loading ?(
-       
-       <ClipLoader
-       color={"#36D7B7"}
-       loading={loading}
-       css={override}
-       size={150}/>
-     
-
-    ):
+   
           <TableBody>
             {products.map((product) => {
               const {
@@ -202,10 +202,10 @@ export default function Manageproducts() {
               );
             })}
           </TableBody>
-}
+
         </Table>
       </TableContainer>
-
+}
       <Grid
         item
         xs={12}
@@ -225,6 +225,7 @@ export default function Manageproducts() {
         </Typography>
         
       </Grid>
+
     </>
   );
 }
